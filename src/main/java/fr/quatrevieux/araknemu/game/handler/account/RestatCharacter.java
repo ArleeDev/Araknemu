@@ -12,12 +12,11 @@ public class RestatCharacter implements PacketHandler<GameSession, AskRestat> {
     @Override
     public void handle(GameSession session, AskRestat packet) throws Exception {
         try {
-            validate(session,packet);
+            validate(session, packet);
             NullnessUtil.castNonNull(session.player())
                     .properties()
                     .characteristics()
                     .restat();
-            ;
         } catch (RuntimeException e) {
             throw new ErrorPacket(new Noop(), e);
         }
@@ -28,15 +27,13 @@ public class RestatCharacter implements PacketHandler<GameSession, AskRestat> {
         return AskRestat.class;
     }
 
-    @SuppressWarnings("dereference.of.nullable")
-    private boolean validate(GameSession session, AskRestat packet) throws Exception
-    {
-        if(session.player()==null)
+    private void validate(GameSession session, AskRestat packet) {
+        if (session == null)
+            throw new RuntimeException("current session does not exist");
+        else if (session.player() == null)
             throw new RuntimeException("current session does not contain an active player");
-        else if(session.player().id()!=packet.playerId())
+        else if (NullnessUtil.castNonNull(session.player()).id() != packet.playerId())
             throw new RuntimeException("current session playerId does not match packet's playerId");
-
-        return true;
     }
 }
 
