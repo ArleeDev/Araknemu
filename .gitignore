@@ -12,3 +12,5 @@ config.ini
 hs_err_*
 replay_*
 hotspot_*
+resources/mysql_data.sql
+/config.ini.dist
