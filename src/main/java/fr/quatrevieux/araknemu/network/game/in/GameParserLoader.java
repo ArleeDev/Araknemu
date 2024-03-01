@@ -131,7 +131,8 @@ public final class GameParserLoader implements ParserLoader {
             new BlockSpectatorRequest.Parser(),
             new LockTeamRequest.Parser(),
             new NeedHelpRequest.Parser(),
-            new ShowCellRequest.Parser()
+            new ShowCellRequest.Parser(),
+            new AskRestat.Parser()
         );
     }
 }

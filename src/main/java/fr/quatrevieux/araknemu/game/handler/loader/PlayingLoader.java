@@ -28,6 +28,7 @@ import fr.quatrevieux.araknemu.game.handler.EnsureFightingOrSpectator;
 import fr.quatrevieux.araknemu.game.handler.EnsureInactiveFight;
 import fr.quatrevieux.araknemu.game.handler.EnsurePlaying;
 import fr.quatrevieux.araknemu.game.handler.account.BoostCharacteristic;
+import fr.quatrevieux.araknemu.game.handler.account.RestatCharacter;
 import fr.quatrevieux.araknemu.game.handler.chat.SaveSubscription;
 import fr.quatrevieux.araknemu.game.handler.chat.SendMessage;
 import fr.quatrevieux.araknemu.game.handler.chat.SpamCheckAttachment;
@@ -64,6 +65,7 @@ public final class PlayingLoader extends AbstractLoader {
             new EnsureInactiveFight(new RemoveObject()),
             new EnsureInactiveFight(new BoostCharacteristic()),
             new EnsureInactiveFight(new UpgradeSpell()),
+            new EnsureInactiveFight(new RestatCharacter()),
             new MoveSpell(),
             new EnsureFightingOrSpectator(new LeaveFight(), new LeaveSpectatorFight()),
         };

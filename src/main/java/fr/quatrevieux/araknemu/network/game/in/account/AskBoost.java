@@ -31,24 +31,38 @@ import org.checkerframework.common.value.qual.MinLen;
  * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Account.as#L111
  */
 public final class AskBoost implements Packet {
+    private final int playerId;
     private final Characteristic characteristic;
+    private final int amount;
 
-    public AskBoost(Characteristic characteristic) {
+    public AskBoost(int playerId, Characteristic characteristic, int amount) {
+        this.playerId = playerId;
         this.characteristic = characteristic;
+        this.amount = amount;
+    }
+
+    public int playerId()
+    {
+        return playerId;
     }
 
     public Characteristic characteristic() {
         return characteristic;
     }
 
+    public int amount()
+    {
+        return amount;
+    }
+
     public static final class Parser implements SinglePacketParser<AskBoost> {
         @Override
-        public AskBoost parse(String input) throws ParsePacketException {
-            return new AskBoost(
-                Characteristic.fromId(
-                    Integer.parseInt(input)
-                )
-            );
+        public AskBoost parse(String input) throws ParsePacketException
+        {
+            int playerId = Integer.parseInt(input.split(";")[0]);
+            Characteristic stat = Characteristic.fromId(Integer.parseInt(input.split(";")[1]));
+            int amount = Integer.parseInt(input.split(";")[2]);
+            return new AskBoost(playerId,stat,amount);
         }
 
         @Override

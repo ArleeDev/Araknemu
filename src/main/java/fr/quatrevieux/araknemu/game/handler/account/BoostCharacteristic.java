@@ -36,7 +36,7 @@ public final class BoostCharacteristic implements PacketHandler<GameSession, Ask
             NullnessUtil.castNonNull(session.player())
                 .properties()
                 .characteristics()
-                .boostCharacteristic(packet.characteristic())
+                .boostCharacteristic(packet.characteristic(), packet.amount());
             ;
         } catch (RuntimeException e) {
             throw new ErrorPacket(new Noop(), e);

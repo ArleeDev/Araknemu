@@ -42,6 +42,11 @@ public final class DefaultCharacteristics implements MutableCharacteristics {
     }
 
     @Override
+    public void setAll(Map<Characteristic, Integer> values) {
+        map.putAll(values);
+    }
+
+    @Override
     public void add(Characteristic characteristic, int value) {
         map.put(characteristic, map.getOrDefault(characteristic, 0) + value);
     }

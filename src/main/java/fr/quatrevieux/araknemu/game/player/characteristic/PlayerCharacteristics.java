@@ -33,6 +33,9 @@ import fr.quatrevieux.araknemu.game.world.creature.characteristics.Characteristi
 import fr.quatrevieux.araknemu.game.world.creature.characteristics.DefaultCharacteristics;
 import fr.quatrevieux.araknemu.game.world.creature.characteristics.MutableCharacteristics;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * Characteristic map for player
  * This class will handle aggregation of stats, and computed stats
@@ -112,6 +115,78 @@ public final class PlayerCharacteristics implements CharacterCharacteristics {
         entity.setBoostPoints(points);
         base.add(characteristic, interval.boost());
     }
+
+    /**
+     * Boost a characteristic by amount, or until out of boostpoints
+     */
+    public void boostCharacteristic(Characteristic characteristic, int amount) {
+        int remainingPoints = entity.boostPoints();
+        int initAmount = base.get(characteristic);
+        int add = 0;
+
+        while (add < amount)
+        {
+            final BoostStatsData.Interval interval = race.boost(characteristic, initAmount+add);
+
+            if (remainingPoints - interval.cost() >= 0)
+            {
+                remainingPoints-=interval.cost();
+                add++;
+            }
+            else
+                break;
+        }
+
+        if (remainingPoints < 0) {
+            throw new IllegalStateException("Not enough points for boost stats");
+        }
+
+        entity.setBoostPoints(remainingPoints);
+        base.add(characteristic, add);
+    }
+
+    public void restat() {
+        List<Characteristic> stats = new ArrayList<>();
+        stats.add(Characteristic.VITALITY);
+        stats.add(Characteristic.WISDOM);
+        stats.add(Characteristic.STRENGTH);
+        stats.add(Characteristic.INTELLIGENCE);
+        stats.add(Characteristic.LUCK);
+        stats.add(Characteristic.AGILITY);
+
+        int basePoints = stats.stream().mapToInt(this::getPointsFromBase).sum();
+        if (basePoints > 0)
+        {
+            Map<Characteristic,Integer> values = stats.stream().filter(s ->
+                    base.get(s)!=0).collect(Collectors.toMap(s ->
+                    s, s -> 0
+            ));
+
+            entity.setBoostPoints(entity.boostPoints()+basePoints);
+            base.setAll(values);
+        }
+    }
+
+    private int getPointsFromBase(Characteristic stat)
+    {
+        int pointsInStat=base.get(stat);
+        int currentPoint=0;
+        int characteristicsPointsSpent=0;
+
+        while(currentPoint<pointsInStat)
+        {
+            final BoostStatsData.Interval interval = race.boost(
+                    stat,
+                    currentPoint
+            );
+
+            characteristicsPointsSpent+=interval.cost();
+            currentPoint++;
+        }
+
+        return characteristicsPointsSpent;
+    }
+
 
     @Override
     public int boostPoints() {
