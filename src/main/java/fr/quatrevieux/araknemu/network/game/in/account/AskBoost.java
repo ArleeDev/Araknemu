@@ -59,9 +59,13 @@ public final class AskBoost implements Packet {
         @Override
         public AskBoost parse(String input) throws ParsePacketException
         {
-            int playerId = Integer.parseInt(input.split(";")[0]);
-            Characteristic stat = Characteristic.fromId(Integer.parseInt(input.split(";")[1]));
-            int amount = Integer.parseInt(input.split(";")[2]);
+            String[] arr = input.split(";");
+            if(arr.length!=3)
+                throw new RuntimeException("provided input format is invalid: "+input);
+
+            int playerId = Integer.parseInt(arr[0]);
+            Characteristic stat = Characteristic.fromId(Integer.parseInt(arr[1]));
+            int amount = Integer.parseInt(arr[2]);
             return new AskBoost(playerId,stat,amount);
         }
 

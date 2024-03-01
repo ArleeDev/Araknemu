@@ -21,16 +21,7 @@ package fr.quatrevieux.araknemu.network.game.in;
 
 import fr.quatrevieux.araknemu.core.network.parser.ParserLoader;
 import fr.quatrevieux.araknemu.core.network.parser.SinglePacketParser;
-import fr.quatrevieux.araknemu.network.game.in.account.AddCharacterRequest;
-import fr.quatrevieux.araknemu.network.game.in.account.AskBoost;
-import fr.quatrevieux.araknemu.network.game.in.account.AskCharacterList;
-import fr.quatrevieux.araknemu.network.game.in.account.AskGift;
-import fr.quatrevieux.araknemu.network.game.in.account.AskRandomName;
-import fr.quatrevieux.araknemu.network.game.in.account.AskRegionalVersion;
-import fr.quatrevieux.araknemu.network.game.in.account.ChoosePlayingCharacter;
-import fr.quatrevieux.araknemu.network.game.in.account.ClientUid;
-import fr.quatrevieux.araknemu.network.game.in.account.DeleteCharacterRequest;
-import fr.quatrevieux.araknemu.network.game.in.account.LoginToken;
+import fr.quatrevieux.araknemu.network.game.in.account.*;
 import fr.quatrevieux.araknemu.network.game.in.basic.AskDate;
 import fr.quatrevieux.araknemu.network.game.in.basic.admin.AdminCommand;
 import fr.quatrevieux.araknemu.network.game.in.basic.admin.AdminMove;
