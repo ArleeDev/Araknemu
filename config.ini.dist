@@ -12,7 +12,7 @@ server.port = 4444
 ; Dofus client Configuration
 ; --------------------------
 ; > The required Dofus client version for logged in. Default "1.29.1"
-client.version = 1.29.1
+client.version = 1.39.5
 
 ; Password
 ; --------
@@ -30,6 +30,8 @@ client.version = 1.29.1
 ; > The argon2 algorithm type. Default: "argon2id"
 ; > Available types : "argon2i", "argon2d", "argon2id"
 ;password.argon2.type = argon2id
+
+password.defaultHash = plain
 
 ; Ban IP system
 ; -------------
@@ -86,11 +88,13 @@ client.version = 1.29.1
 realm.host = 127.0.0.1
 realm.user = araknemu
 realm.dbname = araknemu
+realm.password = FrrRRrPTK7CqaUtb0iai
 
 ; Configure database for game server
 game.host = 127.0.0.1
 game.user = araknemu
 game.dbname = araknemu
+game.password = FrrRRrPTK7CqaUtb0iai
 
 [game]
 ; Section for configure the game server

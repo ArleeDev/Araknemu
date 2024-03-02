@@ -26,6 +26,8 @@ import fr.quatrevieux.araknemu.core.dbal.repository.EntityNotFoundException;
 import fr.quatrevieux.araknemu.core.network.exception.CloseWithPacket;
 import fr.quatrevieux.araknemu.core.network.parser.PacketHandler;
 import fr.quatrevieux.araknemu.game.GameConfiguration;
+import fr.quatrevieux.araknemu.game.account.CharactersService;
+import fr.quatrevieux.araknemu.game.account.GameAccount;
 import fr.quatrevieux.araknemu.game.player.GamePlayer;
 import fr.quatrevieux.araknemu.game.player.PlayerService;
 import fr.quatrevieux.araknemu.game.player.event.GameJoined;
@@ -33,18 +35,22 @@ import fr.quatrevieux.araknemu.network.game.GameSession;
 import fr.quatrevieux.araknemu.network.game.in.account.ChoosePlayingCharacter;
 import fr.quatrevieux.araknemu.network.game.out.account.CharacterSelected;
 import fr.quatrevieux.araknemu.network.game.out.account.CharacterSelectionError;
+import fr.quatrevieux.araknemu.network.game.out.account.heroes.HeroFillMenu;
 import fr.quatrevieux.araknemu.network.game.out.info.Error;
 import fr.quatrevieux.araknemu.network.game.out.info.Information;
+import org.checkerframework.checker.nullness.util.NullnessUtil;
 
 /**
  * Handle character select for entering game
  */
 public final class SelectCharacter implements PacketHandler<GameSession, ChoosePlayingCharacter> {
-    private final PlayerService service;
+    private final CharactersService accountCharactersService;
+    private final PlayerService playerService;
     private final GameConfiguration configuration;
 
-    public SelectCharacter(PlayerService service, GameConfiguration configuration) {
-        this.service = service;
+    public SelectCharacter(CharactersService charactersService, PlayerService playerService, GameConfiguration configuration) {
+        this.accountCharactersService = charactersService;
+        this.playerService = playerService;
         this.configuration = configuration;
     }
 
@@ -59,7 +65,7 @@ public final class SelectCharacter implements PacketHandler<GameSession, ChooseP
             }
 
             try {
-                player = service.load(session, packet.id());
+                player = playerService.load(session, packet.id());
                 player.register(session);
             } catch (EntityNotFoundException e) {
                 throw new CloseWithPacket(new CharacterSelectionError());
@@ -70,6 +76,9 @@ public final class SelectCharacter implements PacketHandler<GameSession, ChooseP
         player.dispatch(new GameJoined());
         session.log().ifPresent(log -> log.setPlayerId(player.id()));
 
+        final GameAccount account = NullnessUtil.castNonNull(session.account());
+
+        session.send(new HeroFillMenu(session, accountCharactersService.list(account)));
         session.send(Error.welcome());
         session.log().flatMap(SessionLog::last).ifPresent(log -> session.send(Information.lastLogin(LocalDateTime.ofInstant(log.startDate(), configuration.timezone()), log.ipAddress())));
         session.send(Information.currentIpAddress(session.channel().address().getAddress().getHostAddress()));

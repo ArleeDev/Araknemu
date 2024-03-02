@@ -30,6 +30,7 @@ import fr.quatrevieux.araknemu.network.game.in.account.AddCharacterRequest;
 import fr.quatrevieux.araknemu.network.game.out.account.CharacterCreated;
 import fr.quatrevieux.araknemu.network.game.out.account.CharacterCreationError;
 import fr.quatrevieux.araknemu.network.game.out.account.CharactersList;
+import fr.quatrevieux.araknemu.network.game.out.account.heroes.HeroFillMenu;
 import org.checkerframework.checker.nullness.util.NullnessUtil;
 
 /**
@@ -55,13 +56,25 @@ public final class CreateCharacter implements PacketHandler<GameSession, AddChar
             );
         }
 
-        session.send(new CharacterCreated());
-        session.send(
-            new CharactersList(
-                account.remainingTime(),
-                service.list(account)
-            )
-        );
+        if(session.player()!=null)
+        {
+            session.send(
+                    new HeroFillMenu(
+                            session,
+                            service.list(account)
+                    )
+            );
+        }
+        else
+        {
+            session.send(new CharacterCreated());
+            session.send(
+                    new CharactersList(
+                            account.remainingTime(),
+                            service.list(account)
+                    )
+            );
+        }
     }
 
     @Override

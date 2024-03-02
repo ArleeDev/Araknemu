@@ -31,6 +31,8 @@ import fr.quatrevieux.araknemu.network.game.in.account.ChoosePlayingCharacter;
 import fr.quatrevieux.araknemu.network.game.in.account.ClientUid;
 import fr.quatrevieux.araknemu.network.game.in.account.DeleteCharacterRequest;
 import fr.quatrevieux.araknemu.network.game.in.account.LoginToken;
+import fr.quatrevieux.araknemu.network.game.in.account.heroes.AskHeroFillMenu;
+import fr.quatrevieux.araknemu.network.game.in.account.heroes.AskHeroToggle;
 import fr.quatrevieux.araknemu.network.game.in.basic.AskDate;
 import fr.quatrevieux.araknemu.network.game.in.basic.admin.AdminCommand;
 import fr.quatrevieux.araknemu.network.game.in.basic.admin.AdminMove;
@@ -131,7 +133,9 @@ public final class GameParserLoader implements ParserLoader {
             new BlockSpectatorRequest.Parser(),
             new LockTeamRequest.Parser(),
             new NeedHelpRequest.Parser(),
-            new ShowCellRequest.Parser()
+            new ShowCellRequest.Parser(),
+            new AskHeroFillMenu.Parser(),
+                new AskHeroToggle.Parser()
         );
     }
 }
