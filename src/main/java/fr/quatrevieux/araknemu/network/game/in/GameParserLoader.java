@@ -21,6 +21,7 @@ package fr.quatrevieux.araknemu.network.game.in;
 
 import fr.quatrevieux.araknemu.core.network.parser.ParserLoader;
 import fr.quatrevieux.araknemu.core.network.parser.SinglePacketParser;
+import fr.quatrevieux.araknemu.network.game.in.account.*;
 import fr.quatrevieux.araknemu.network.game.in.account.AddCharacterRequest;
 import fr.quatrevieux.araknemu.network.game.in.account.AskBoost;
 import fr.quatrevieux.araknemu.network.game.in.account.AskCharacterList;
@@ -134,8 +135,9 @@ public final class GameParserLoader implements ParserLoader {
             new LockTeamRequest.Parser(),
             new NeedHelpRequest.Parser(),
             new ShowCellRequest.Parser(),
-            new AskHeroFillMenu.Parser(),
-                new AskHeroToggle.Parser()
+                new AskHeroFillMenu.Parser(),
+                new AskHeroToggle.Parser(),
+                new AskRestat.Parser()
         );
     }
 }
