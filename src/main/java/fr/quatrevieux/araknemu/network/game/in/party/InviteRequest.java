@@ -11,12 +11,19 @@ import org.checkerframework.common.value.qual.MinLen;
  *
  * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Party.as#L19
  */
-public class Inviting implements Packet {
+public class InviteRequest implements Packet {
 
-    public static final class Parser implements SinglePacketParser<Inviting> {
+    public final String inviteeName;
+
+    public InviteRequest(String inviteeName)
+    {
+        this.inviteeName=inviteeName;
+    }
+
+    public static final class Parser implements SinglePacketParser<InviteRequest> {
         @Override
-        public Inviting parse(String input) throws ParsePacketException {
-            return null;
+        public InviteRequest parse(String input) throws ParsePacketException {
+            return new InviteRequest(input);
         }
         @Override
         public @MinLen(2) String code() {

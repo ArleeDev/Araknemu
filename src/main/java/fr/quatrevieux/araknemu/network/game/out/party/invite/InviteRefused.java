@@ -1,4 +1,4 @@
-package fr.quatrevieux.araknemu.network.game.out.party;
+package fr.quatrevieux.araknemu.network.game.out.party.invite;
 
 /**
  * Refuses a pending party invite request

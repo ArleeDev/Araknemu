@@ -197,6 +197,10 @@ public final class GameConfiguration {
         return new FightConfiguration();
     }
 
+    public PartyConfiguration party() {
+        return new PartyConfiguration();
+    }
+
     public final class PlayerConfiguration {
         /**
          * The player name regex
@@ -449,6 +453,13 @@ public final class GameConfiguration {
          */
         public @NonNegative int initialErosion() {
             return pool.nonNegativeInteger("fight.initialErosion", 10);
+        }
+    }
+
+    public final class PartyConfiguration
+    {
+        public @NonNegative int maxSize() {
+            return pool.nonNegativeInteger("party.maxSize", 8);
         }
     }
 }
