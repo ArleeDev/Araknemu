@@ -107,6 +107,9 @@ game.password = FrrRRrPTK7CqaUtb0iai
 ; > The timezone for game server. Default Europe/Paris
 ;server.timezone = Europe/Paris
 
+; Party Configuration
+; > The maximum allowed size of one party. Default 8
+; party.maxSize = 8
 
 ; Antispam & other
 ; ----------------
@@ -279,6 +282,3 @@ game.password = FrrRRrPTK7CqaUtb0iai
 ;player.scripts.path = scripts/commands/player
 ;debug.scripts.path = scripts/commands/debug
 ;server.scripts.path = scripts/commands/server
-
-[party]
-party.maxSize = 8

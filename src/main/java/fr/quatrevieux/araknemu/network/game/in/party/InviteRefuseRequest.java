@@ -10,28 +10,33 @@ import org.checkerframework.common.value.qual.MinLen;
  *
  * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Party.as#L23
  */
-public class InviteRefuseRequest implements Packet {
+public class InviteRefuseRequest implements Packet
+{
 
-    private final String code;
+	private final String code;
 
-    public InviteRefuseRequest(String code)
-    {
-        this.code=code;
-    }
+	public InviteRefuseRequest(String code)
+	{
+		this.code = code;
+	}
 
-    public String code()
-    {
-        return code;
-    }
+	public String code()
+	{
+		return code;
+	}
 
-    public static final class Parser implements SinglePacketParser<InviteRefuseRequest> {
-        @Override
-        public InviteRefuseRequest parse(String input) throws ParsePacketException {
-            return new InviteRefuseRequest(code());
-        }
-        @Override
-        public @MinLen(2) String code() {
-            return "PR";
-        }
-    }
+	public static final class Parser implements SinglePacketParser<InviteRefuseRequest>
+	{
+		@Override
+		public InviteRefuseRequest parse(String input) throws ParsePacketException
+		{
+			return new InviteRefuseRequest(code());
+		}
+
+		@Override
+		public @MinLen(2) String code()
+		{
+			return "PR";
+		}
+	}
 }

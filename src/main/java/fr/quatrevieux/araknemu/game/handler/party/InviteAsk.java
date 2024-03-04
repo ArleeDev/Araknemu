@@ -34,7 +34,7 @@ public final class InviteAsk implements PacketHandler<GameSession, InviteRequest
 		GamePlayer inviter = NullnessUtil.castNonNull(session.player());
 		playerService.online()
 				.stream()
-				.filter(p -> p.name().equals(inPacket.inviteeName))
+				.filter(p -> p.name().equals(inPacket.inviteeName()))
 				.findFirst()
 				.ifPresentOrElse(invitee ->
 				{
@@ -42,19 +42,24 @@ public final class InviteAsk implements PacketHandler<GameSession, InviteRequest
 						inviter.send(new InviteFailedAlreadyGrouped());
 					else
 					{
-						partyService.getIfContains(inviter).ifPresentOrElse(party ->
-						{
-							if (partyService.isFull(party))
-								inviter.send(new InviteFailedPartyFull());
-						}, () ->
-						{
-							partyInviteService.create(inviter, invitee);
-							Invited outPacket = new Invited(inviter, invitee);
-							inviter.send(outPacket);
-							invitee.send(outPacket);
-						});
+						partyService.getIfContains(inviter)
+								.ifPresentOrElse(party -> {
+									if (partyService.isFull(party))
+										inviter.send(new InviteFailedPartyFull()); //failed attempt: inviting into existing party but the party is full
+									else
+									sendInvite(inviter,invitee);
+								},
+								() -> sendInvite(inviter,invitee));
 					}
-				}, () -> inviter.send(new InviteFailedCantFind(inPacket.inviteeName)));
+				}, () -> inviter.send(new InviteFailedCantFind(inPacket.inviteeName())));
+	}
+
+	private void sendInvite(GamePlayer inviter, GamePlayer invitee)
+	{
+		partyInviteService.create(inviter, invitee);
+		Invited outPacket = new Invited(inviter, invitee);
+		inviter.send(outPacket);
+		invitee.send(outPacket);
 	}
 
 	@Override

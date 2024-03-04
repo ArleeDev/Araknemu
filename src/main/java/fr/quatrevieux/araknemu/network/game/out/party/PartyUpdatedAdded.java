@@ -1,26 +1,35 @@
 package fr.quatrevieux.araknemu.network.game.out.party;
 
-import fr.quatrevieux.araknemu.game.party.Party;
+import fr.quatrevieux.araknemu.game.player.GamePlayer;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Constructs the party menu based on the party members' stats and graphics
+ * Constructs the party menu UIElement upon adding a new party member
  *
- * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Party.as#L185
+ * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Party.as#L198
  */
 public class PartyUpdatedAdded
 {
-    private Party party;
+    private Set<GamePlayer> party;
 
-    public PartyUpdatedAdded(Party party)
+    public PartyUpdatedAdded(Set<GamePlayer> players)
     {
-        this.party = party;
+        this.party = players;
+    }
+
+    public PartyUpdatedAdded(GamePlayer player)
+    {
+        this.party = new HashSet<>();
+        party.add(player);
     }
 
     @Override
     public String toString()
     {
         StringBuilder builder = new StringBuilder("PM+");
-        party.getPlayersInParty()
+        party
                 .forEach(p -> builder
                         .append(p.id()).append(";")
                         .append(p.name()).append(";")

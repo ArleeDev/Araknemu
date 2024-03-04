@@ -13,21 +13,29 @@ import org.checkerframework.common.value.qual.MinLen;
  */
 public class InviteRequest implements Packet {
 
-    public final String inviteeName;
+	private final String inviteeName;
 
-    public InviteRequest(String inviteeName)
-    {
-        this.inviteeName=inviteeName;
-    }
+	public String inviteeName()
+	{
+		return inviteeName;
+	}
 
-    public static final class Parser implements SinglePacketParser<InviteRequest> {
-        @Override
-        public InviteRequest parse(String input) throws ParsePacketException {
-            return new InviteRequest(input);
-        }
-        @Override
-        public @MinLen(2) String code() {
-            return "PI";
-        }
-    }
+	public InviteRequest(String inviteeName)
+	{
+		this.inviteeName = inviteeName;
+	}
+
+	public static final class Parser implements SinglePacketParser<InviteRequest> {
+		@Override
+		public InviteRequest parse(String input) throws ParsePacketException
+		{
+			return new InviteRequest(input);
+		}
+
+		@Override
+		public @MinLen(2) String code()
+		{
+			return "PI";
+		}
+	}
 }
