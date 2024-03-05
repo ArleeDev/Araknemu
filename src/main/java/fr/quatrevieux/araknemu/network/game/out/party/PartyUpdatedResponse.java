@@ -1,6 +1,5 @@
 package fr.quatrevieux.araknemu.network.game.out.party;
 
-import fr.quatrevieux.araknemu.game.party.Party;
 import fr.quatrevieux.araknemu.game.player.GamePlayer;
 
 import java.util.HashSet;
@@ -82,9 +81,9 @@ public class PartyUpdatedResponse
 	 */
 	public static class Reorder
 	{
-		private final Party party;
+		private final Set<GamePlayer> party;
 
-		public Reorder(Party party)
+		public Reorder(Set<GamePlayer> party)
 		{
 			this.party = party;
 		}
@@ -93,8 +92,7 @@ public class PartyUpdatedResponse
 		public String toString()
 		{
 			StringBuilder builder = new StringBuilder("PM~");
-			party.getPlayersInParty()
-				 .forEach(p -> builder
+			party.forEach(p -> builder
 						 .append(p.id()).append(";")
 						 .append(p.name()).append(";")
 						 .append(p.race().race().ordinal()*10 + p.spriteInfo().gender().ordinal()).append(";") //maps to sprites: clientfolder/clips/sprites/(n).swf

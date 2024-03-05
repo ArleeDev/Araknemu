@@ -5,7 +5,6 @@ import fr.quatrevieux.araknemu.game.party.PartyInviteService;
 import fr.quatrevieux.araknemu.game.player.GamePlayer;
 import fr.quatrevieux.araknemu.network.game.GameSession;
 import fr.quatrevieux.araknemu.network.game.in.party.InviteRefuseRequest;
-import fr.quatrevieux.araknemu.network.game.out.party.InviteResponse;
 import org.checkerframework.checker.nullness.util.NullnessUtil;
 
 public final class InviteRefuse implements PacketHandler<GameSession, InviteRefuseRequest> {
@@ -20,11 +19,7 @@ public final class InviteRefuse implements PacketHandler<GameSession, InviteRefu
     public void handle(GameSession session, InviteRefuseRequest inPacket) throws Exception
     {
         GamePlayer player = NullnessUtil.castNonNull(session.player());
-        partyInviteService.getIfContains(player).ifPresent(inv -> {
-            inv.getInviter().send(new InviteResponse.Refuse());
-            inv.getInvitee().send(new InviteResponse.Refuse());
-            partyInviteService.remove(inv);
-        });
+        partyInviteService.inviteRefuse(player);
     }
 
 

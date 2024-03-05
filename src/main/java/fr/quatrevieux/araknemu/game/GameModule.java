@@ -1090,18 +1090,13 @@ public final class GameModule implements ContainerModule {
             container.get(fr.quatrevieux.araknemu.core.event.Dispatcher.class)
         ));
 
-        configurator.persist(PartyInviteService.class, container -> new PartyInviteService(
-                container.get(PlayerService.class),
-                container.get(GameConfiguration.class),
-                container.get(Logger.class)
-        ));
+        configurator.persist(PartyInviteService.class, container -> new PartyInviteService());
 
         configurator.persist(PartyService.class, container -> new PartyService(
            container.get(PlayerService.class),
            container.get(PartyInviteService.class),
            container.get(ExplorationMapService.class),
-           container.get(GameConfiguration.class),
-           container.get(Logger.class)
+           container.get(GameConfiguration.class)
         ));
     }
 }
