@@ -12,13 +12,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Party.as#L19
  */
 public class InviteRequest implements Packet {
-
-	private final String inviteeName;
-
-	public String inviteeName()
-	{
-		return inviteeName;
-	}
+	public final String inviteeName;
 
 	public InviteRequest(String inviteeName)
 	{

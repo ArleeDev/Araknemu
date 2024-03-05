@@ -10,12 +10,12 @@ import org.checkerframework.common.value.qual.MinLen;
  *
  * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Party.as#L40
  */
-public class PartyPositionsGetting  implements Packet {
+public class PartyPositionsRequest implements Packet {
 
-    public static final class Parser implements SinglePacketParser<PartyPositionsGetting> {
+    public static final class Parser implements SinglePacketParser<PartyPositionsRequest> {
         @Override
-        public PartyPositionsGetting parse(String input) throws ParsePacketException {
-            return null;
+        public PartyPositionsRequest parse(String input) throws ParsePacketException {
+            return new PartyPositionsRequest();
         }
         @Override
         public @MinLen(2) String code() {

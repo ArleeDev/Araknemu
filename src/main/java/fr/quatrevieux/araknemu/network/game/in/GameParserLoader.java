@@ -68,10 +68,7 @@ import fr.quatrevieux.araknemu.network.game.in.info.ScreenInfo;
 import fr.quatrevieux.araknemu.network.game.in.object.ObjectDeleteRequest;
 import fr.quatrevieux.araknemu.network.game.in.object.ObjectMoveRequest;
 import fr.quatrevieux.araknemu.network.game.in.object.ObjectUseRequest;
-import fr.quatrevieux.araknemu.network.game.in.party.InviteAcceptRequest;
-import fr.quatrevieux.araknemu.network.game.in.party.InviteRefuseRequest;
-import fr.quatrevieux.araknemu.network.game.in.party.InviteRequest;
-import fr.quatrevieux.araknemu.network.game.in.party.PartyLeaveRequest;
+import fr.quatrevieux.araknemu.network.game.in.party.*;
 import fr.quatrevieux.araknemu.network.game.in.spell.SpellMove;
 import fr.quatrevieux.araknemu.network.game.in.spell.SpellUpgrade;
 
@@ -82,64 +79,65 @@ import java.util.Collection;
  * Parser loader for game packets
  */
 public final class GameParserLoader implements ParserLoader {
-    @Override
-    public Collection<SinglePacketParser<?>> load() {
-        return Arrays.asList(
-            new LoginToken.Parser(),
-            new AskCharacterList.Parser(),
-            new AskRegionalVersion.Parser(),
-            new AddCharacterRequest.Parser(),
-            new ChoosePlayingCharacter.Parser(),
-            new ClientUid.Parser(),
-            new ScreenInfo.Parser(),
-            new AskGift.Parser(),
-            new CreateGameRequest.Parser(),
-            new AskExtraInfo.Parser(),
-            new GameActionRequest.Parser(),
-            new GameActionAcknowledge.Parser(),
-            new GameActionCancel.Parser(),
-            new AskDate.Parser(),
-            new UseSmiley.Parser(),
-            new Ping.Parser(),
-            new Message.Parser(),
-            new DeleteCharacterRequest.Parser(),
-            new SubscribeChannels.Parser(),
-            new AskRandomName.Parser(),
-            new AdminCommand.Parser(),
-            new ObjectMoveRequest.Parser(),
-            new AskBoost.Parser(),
-            new ObjectDeleteRequest.Parser(),
-            new ObjectUseRequest.Parser(),
-            new SpellMove.Parser(),
-            new SpellUpgrade.Parser(),
-            new FighterChangePlace.Parser(),
-            new FighterReady.Parser(),
-            new TurnEnd.Parser(),
-            new QuickPing.Parser(),
-            new ListFightsRequest.Parser(),
-            new AskFightDetails.Parser(),
-            new KickOrLeaveRequestParser(),
-            new SetOrientationRequest.Parser(),
-            new CreateDialogRequest.Parser(),
-            new LeaveDialogRequest.Parser(),
-            new ChosenResponse.Parser(),
-            new ExchangeRequest.Parser(),
-            new LeaveExchangeRequest.Parser(),
-            new AcceptExchangeRequest.Parser(),
-            new KamasMovement.Parser(),
-            new ItemsMovement.Parser(),
-            new ExchangeReady.Parser(),
-            new BuyRequest.Parser(),
-            new SellRequest.Parser(),
-            new AdminMove.Parser(),
-            new BlockSpectatorRequest.Parser(),
-            new LockTeamRequest.Parser(),
-            new NeedHelpRequest.Parser(),
-            new ShowCellRequest.Parser(),
-            new InviteRequest.Parser(),
-            new InviteRefuseRequest.Parser(),
-            new InviteAcceptRequest.Parser(),
-            new PartyLeaveRequest.Parser()
-        );
-    }
+	@Override
+	public Collection<SinglePacketParser<?>> load() {
+		return Arrays.asList(
+				new LoginToken.Parser(),
+				new AskCharacterList.Parser(),
+				new AskRegionalVersion.Parser(),
+				new AddCharacterRequest.Parser(),
+				new ChoosePlayingCharacter.Parser(),
+				new ClientUid.Parser(),
+				new ScreenInfo.Parser(),
+				new AskGift.Parser(),
+				new CreateGameRequest.Parser(),
+				new AskExtraInfo.Parser(),
+				new GameActionRequest.Parser(),
+				new GameActionAcknowledge.Parser(),
+				new GameActionCancel.Parser(),
+				new AskDate.Parser(),
+				new UseSmiley.Parser(),
+				new Ping.Parser(),
+				new Message.Parser(),
+				new DeleteCharacterRequest.Parser(),
+				new SubscribeChannels.Parser(),
+				new AskRandomName.Parser(),
+				new AdminCommand.Parser(),
+				new ObjectMoveRequest.Parser(),
+				new AskBoost.Parser(),
+				new ObjectDeleteRequest.Parser(),
+				new ObjectUseRequest.Parser(),
+				new SpellMove.Parser(),
+				new SpellUpgrade.Parser(),
+				new FighterChangePlace.Parser(),
+				new FighterReady.Parser(),
+				new TurnEnd.Parser(),
+				new QuickPing.Parser(),
+				new ListFightsRequest.Parser(),
+				new AskFightDetails.Parser(),
+				new KickOrLeaveRequestParser(),
+				new SetOrientationRequest.Parser(),
+				new CreateDialogRequest.Parser(),
+				new LeaveDialogRequest.Parser(),
+				new ChosenResponse.Parser(),
+				new ExchangeRequest.Parser(),
+				new LeaveExchangeRequest.Parser(),
+				new AcceptExchangeRequest.Parser(),
+				new KamasMovement.Parser(),
+				new ItemsMovement.Parser(),
+				new ExchangeReady.Parser(),
+				new BuyRequest.Parser(),
+				new SellRequest.Parser(),
+				new AdminMove.Parser(),
+				new BlockSpectatorRequest.Parser(),
+				new LockTeamRequest.Parser(),
+				new NeedHelpRequest.Parser(),
+				new ShowCellRequest.Parser(),
+				new InviteRequest.Parser(),
+				new InviteRefuseRequest.Parser(),
+				new InviteAcceptRequest.Parser(),
+				new PartyLeaveRequest.Parser(),
+				new PartyPositionsRequest.Parser()
+		);
+	}
 }

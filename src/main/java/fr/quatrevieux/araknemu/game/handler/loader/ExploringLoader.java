@@ -43,13 +43,6 @@ import fr.quatrevieux.araknemu.game.handler.fight.ListFights;
 import fr.quatrevieux.araknemu.game.handler.fight.ShowFightDetails;
 import fr.quatrevieux.araknemu.game.handler.game.CancelGameAction;
 import fr.quatrevieux.araknemu.game.handler.game.LoadExtraInfo;
-import fr.quatrevieux.araknemu.game.handler.party.InviteAccept;
-import fr.quatrevieux.araknemu.game.handler.party.InviteAsk;
-import fr.quatrevieux.araknemu.game.handler.party.InviteRefuse;
-import fr.quatrevieux.araknemu.game.handler.party.PartyLeave;
-import fr.quatrevieux.araknemu.game.party.PartyInviteService;
-import fr.quatrevieux.araknemu.game.party.PartyService;
-import fr.quatrevieux.araknemu.game.player.PlayerService;
 import fr.quatrevieux.araknemu.network.game.GameSession;
 
 /**
@@ -81,10 +74,6 @@ public final class ExploringLoader extends AbstractLoader {
             new BuyItem(),
             new SellItem(),
             new GoToGeolocation(container.get(GeolocationService.class)),
-            new InviteAsk(container.get(PlayerService.class),container.get(PartyInviteService.class),container.get(PartyService.class)),
-            new InviteRefuse(container.get(PlayerService.class),container.get(PartyInviteService.class)),
-            new InviteAccept(container.get(PartyInviteService.class),container.get(PartyService.class)),
-            new PartyLeave(container.get(PartyService.class))
         };
     }
 }

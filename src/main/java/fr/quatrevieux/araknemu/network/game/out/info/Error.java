@@ -197,6 +197,11 @@ public final class Error extends AbstractInformationMessage {
     }
 
     /**
+     * Guild/party requests fail if the target is occupied
+     */
+    public static Error cantInvitePlayerBusy() { return new Error(209); }
+
+    /**
      * Create and cache a simple Error with a code
      *
      * @param code The error code

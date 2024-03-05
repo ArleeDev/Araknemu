@@ -1,5 +1,7 @@
 package fr.quatrevieux.araknemu.game.party;
 
+import fr.quatrevieux.araknemu.core.event.DefaultListenerAggregate;
+import fr.quatrevieux.araknemu.core.event.ListenerAggregate;
 import fr.quatrevieux.araknemu.game.player.GamePlayer;
 
 import java.util.HashSet;
@@ -9,6 +11,7 @@ public class Party
 {
     private Set<GamePlayer> playersInParty;
     private GamePlayer leader;
+
 
     public Party(GamePlayer inviter, GamePlayer invitee)
     {

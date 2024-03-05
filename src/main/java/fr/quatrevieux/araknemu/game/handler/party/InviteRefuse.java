@@ -3,19 +3,16 @@ package fr.quatrevieux.araknemu.game.handler.party;
 import fr.quatrevieux.araknemu.core.network.parser.PacketHandler;
 import fr.quatrevieux.araknemu.game.party.PartyInviteService;
 import fr.quatrevieux.araknemu.game.player.GamePlayer;
-import fr.quatrevieux.araknemu.game.player.PlayerService;
 import fr.quatrevieux.araknemu.network.game.GameSession;
 import fr.quatrevieux.araknemu.network.game.in.party.InviteRefuseRequest;
-import fr.quatrevieux.araknemu.network.game.out.party.invite.InviteRefused;
+import fr.quatrevieux.araknemu.network.game.out.party.InviteResponse;
 import org.checkerframework.checker.nullness.util.NullnessUtil;
 
 public final class InviteRefuse implements PacketHandler<GameSession, InviteRefuseRequest> {
 
-    private final PlayerService playerService;
     private final PartyInviteService partyInviteService;
 
-    public InviteRefuse(PlayerService playerService, PartyInviteService partyInviteService) {
-        this.playerService = playerService;
+    public InviteRefuse(PartyInviteService partyInviteService) {
         this.partyInviteService = partyInviteService;
     }
 
@@ -24,8 +21,8 @@ public final class InviteRefuse implements PacketHandler<GameSession, InviteRefu
     {
         GamePlayer player = NullnessUtil.castNonNull(session.player());
         partyInviteService.getIfContains(player).ifPresent(inv -> {
-            inv.getInviter().send(new InviteRefused());
-            inv.getInvitee().send(new InviteRefused());
+            inv.getInviter().send(new InviteResponse.Refuse());
+            inv.getInvitee().send(new InviteResponse.Refuse());
             partyInviteService.remove(inv);
         });
     }

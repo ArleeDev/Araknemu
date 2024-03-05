@@ -12,7 +12,6 @@ import org.checkerframework.common.value.qual.MinLen;
  */
 public class InviteAcceptRequest implements Packet
 {
-
 	public static final class Parser implements SinglePacketParser<InviteAcceptRequest>
 	{
 		@Override

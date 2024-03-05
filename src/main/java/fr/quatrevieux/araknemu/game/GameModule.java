@@ -1099,6 +1099,7 @@ public final class GameModule implements ContainerModule {
         configurator.persist(PartyService.class, container -> new PartyService(
            container.get(PlayerService.class),
            container.get(PartyInviteService.class),
+           container.get(ExplorationMapService.class),
            container.get(GameConfiguration.class),
            container.get(Logger.class)
         ));

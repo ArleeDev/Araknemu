@@ -9,25 +9,22 @@ import java.util.Optional;
 
 /**
  * Leaving current party
- * <p>
- * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Party.as#L31
+ * <a href="https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Party.as#L31">...</a>
  */
 public class PartyLeaveRequest implements Packet {
-	private final Optional<Integer> leaveId;
+	public final int leaveId;
+	public final boolean kicked;
 
-	public PartyLeaveRequest(int leaveId) //data only provided if kicked, else empty
+	public PartyLeaveRequest(int leaveId)
 	{
-		this.leaveId = Optional.of(leaveId);
+		this.kicked=true;
+		this.leaveId=leaveId;
 	}
 
 	public PartyLeaveRequest()
 	{
-		this.leaveId = Optional.empty();
-	}
-
-	public Optional<Integer> leaveId()
-	{
-		return leaveId;
+		this.kicked=false;
+		this.leaveId=-1; //not used
 	}
 
 	public static final class Parser implements SinglePacketParser<PartyLeaveRequest> {
