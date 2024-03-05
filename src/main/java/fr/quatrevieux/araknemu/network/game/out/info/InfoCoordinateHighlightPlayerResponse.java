@@ -9,16 +9,15 @@ import java.util.Set;
 
 /**
  * Displays players with coordinates on (mini)map
- * <p>
- * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/DataProcessor.as#L678
- * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Infos.as#L69
+ * <a href="https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/DataProcessor.as#L678">...</a>
+ * <a href="https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Infos.as#L69">...</a>
  */
-public class PlayerCoordinateHighlight {
-	private Set<GamePlayer> players;
-	private ExplorationMapService service;
-	private FlagType type;
+public class InfoCoordinateHighlightPlayerResponse {
+	private final Set<GamePlayer> players;
+	private final ExplorationMapService service;
+	private final FlagType type;
 
-	public PlayerCoordinateHighlight(Set<GamePlayer> players, ExplorationMapService service, FlagType type)
+	public InfoCoordinateHighlightPlayerResponse(Set<GamePlayer> players, ExplorationMapService service, FlagType type)
 	{
 		this.players = players;
 		this.service=service;

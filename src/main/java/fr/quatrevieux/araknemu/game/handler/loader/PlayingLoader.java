@@ -72,9 +72,10 @@ public final class PlayingLoader extends AbstractLoader {
             new EnsureFightingOrSpectator(new LeaveFight(), new LeaveSpectatorFight()),
             new InviteAsk(container.get(PlayerService.class), container.get(PartyInviteService.class), container.get(PartyService.class)),
             new EnsureInactiveFight(new InviteRefuse(container.get(PartyInviteService.class))),
-            new EnsureInactiveFight(new InviteAccept(container.get(PartyInviteService.class), container.get(PartyService.class))),
+            new EnsureInactiveFight(new InviteAccept(container.get(PartyService.class))),
             new PartyLeave(container.get(PartyService.class)),
-            new PartyPositions(container.get(PartyService.class))
+            new PartyPositions(container.get(PartyService.class)),
+            new PartyFollow(container.get(PartyService.class)),
         };
     }
 }

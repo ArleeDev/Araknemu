@@ -79,7 +79,6 @@ public class InviteResponse {
 		}
 	}
 
-
 	/**
 	 * Accepts a pending party invite request
 	 * <a href="https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Party.as#L115">...</a>
