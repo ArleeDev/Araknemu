@@ -16,7 +16,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class PartyService {
+public class PartyService
+{
 	private final PlayerService playerService;
 	private final PartyInviteService partyInviteService;
 	private final ExplorationMapService explorationMapService;
@@ -54,6 +55,17 @@ public class PartyService {
 		this.explorationMapService = explorationMapService;
 		this.configuration = configuration.party();
 	}
+
+	public void startFollowAll(GamePlayer requestor, int targetId)
+	{
+
+	}
+
+	public void stopFollowAll(GamePlayer requestor, int targetId)
+	{
+
+	}
+
 
 	@SuppressWarnings({"keyfor", "dereference.of.nullable"})
 	public void startFollow(GamePlayer follower, int targetId)

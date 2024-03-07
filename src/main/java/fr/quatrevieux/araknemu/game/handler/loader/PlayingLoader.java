@@ -76,6 +76,7 @@ public final class PlayingLoader extends AbstractLoader {
             new PartyLeave(container.get(PartyService.class)),
             new PartyPositions(container.get(PartyService.class)),
             new PartyFollow(container.get(PartyService.class)),
+            new PartyFollowAll(container.get(PartyService.class))
         };
     }
 }

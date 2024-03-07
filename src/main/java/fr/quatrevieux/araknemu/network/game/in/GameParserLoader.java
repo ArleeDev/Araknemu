@@ -138,7 +138,8 @@ public final class GameParserLoader implements ParserLoader {
 				new InviteAcceptRequest.Parser(),
 				new PartyLeaveRequest.Parser(),
 				new PartyPositionsRequest.Parser(),
-				new PartyFollowRequest.Parser()
+				new PartyFollowRequest.Parser(),
+				new PartyFollowAllRequest.Parser()
 		);
 	}
 }
