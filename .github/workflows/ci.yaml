@@ -35,10 +35,10 @@ jobs:
             FLUSH PRIVILEGES;
           EOF
 
-      - name: Set up JDK 8
+      - name: Set up JDK 9
         uses: actions/setup-java@v2
         with:
-          java-version: '8'
+          java-version: '9'
           distribution: 'adopt'
 
       - name: Build with Maven
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java_version: [8, 11, 14, 17]
+        java_version: [9, 11, 14, 17]
 
     steps:
       - uses: actions/checkout@v2
@@ -92,7 +92,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Run tests
-        run: mvn --batch-mode -Djacoco.skip=true -P '!checkerframework,!checkerframework-jdk8,!checkerframework-jdk9orlater' test
+        run: mvn --batch-mode -Djacoco.skip=true -P '!checkerframework,!checkerframework-jdk9,!checkerframework-jdk9orlater' test
 
   static_analysis:
     runs-on: ubuntu-latest
