@@ -36,7 +36,13 @@ import fr.quatrevieux.araknemu.game.handler.fight.LeaveSpectatorFight;
 import fr.quatrevieux.araknemu.game.handler.game.CreateGame;
 import fr.quatrevieux.araknemu.game.handler.object.MoveObject;
 import fr.quatrevieux.araknemu.game.handler.object.RemoveObject;
-import fr.quatrevieux.araknemu.game.handler.party.*;
+import fr.quatrevieux.araknemu.game.handler.party.InviteAccept;
+import fr.quatrevieux.araknemu.game.handler.party.InviteAsk;
+import fr.quatrevieux.araknemu.game.handler.party.InviteRefuse;
+import fr.quatrevieux.araknemu.game.handler.party.PartyFollow;
+import fr.quatrevieux.araknemu.game.handler.party.PartyFollowAll;
+import fr.quatrevieux.araknemu.game.handler.party.PartyLeave;
+import fr.quatrevieux.araknemu.game.handler.party.PartyPositions;
 import fr.quatrevieux.araknemu.game.handler.spell.MoveSpell;
 import fr.quatrevieux.araknemu.game.handler.spell.UpgradeSpell;
 import fr.quatrevieux.araknemu.game.party.PartyInviteService;
@@ -54,28 +60,21 @@ public final class PlayingLoader extends AbstractLoader {
     @Override
     @SuppressWarnings("unchecked")
     protected PacketHandler<GameSession, ?>[] handlers(Container container) throws ContainerException {
-        return new PacketHandler[] {
-            new CreateGame(
-                container.get(ExplorationService.class)
-            ),
-            new SendMessage(
-                container.get(ChatService.class),
-                container.get(SpamCheckAttachment.Key.class)
-            ),
-            new SaveSubscription(),
-            new EnsureInactiveFight(new MoveObject()),
-            new EnsureInactiveFight(new RemoveObject()),
-            new EnsureInactiveFight(new BoostCharacteristic()),
-            new EnsureInactiveFight(new UpgradeSpell()),
-            new MoveSpell(),
-            new EnsureFightingOrSpectator(new LeaveFight(), new LeaveSpectatorFight()),
-            new InviteAsk(container.get(PartyService.class)),
-            new EnsureInactiveFight(new InviteRefuse(container.get(PartyInviteService.class))),
-            new EnsureInactiveFight(new InviteAccept(container.get(PartyService.class))),
-            new PartyLeave(container.get(PartyService.class)),
-            new PartyPositions(container.get(PartyService.class)),
-            new PartyFollow(container.get(PartyService.class)),
-            new PartyFollowAll(container.get(PartyService.class))
-        };
+        return new PacketHandler[] {new CreateGame(container.get(ExplorationService.class)),
+                new SendMessage(container.get(ChatService.class), container.get(SpamCheckAttachment.Key.class)),
+                new SaveSubscription(),
+                new EnsureInactiveFight(new MoveObject()),
+                new EnsureInactiveFight(new RemoveObject()),
+                new EnsureInactiveFight(new BoostCharacteristic()),
+                new EnsureInactiveFight(new UpgradeSpell()),
+                new MoveSpell(),
+                new EnsureFightingOrSpectator(new LeaveFight(), new LeaveSpectatorFight()),
+                new InviteAsk(container.get(PartyInviteService.class)),
+                new InviteRefuse(container.get(PartyInviteService.class)),
+                new EnsureInactiveFight(new InviteAccept(container.get(PartyInviteService.class))),
+                new PartyLeave(container.get(PartyService.class)),
+                new PartyPositions(container.get(PartyService.class)),
+                new PartyFollow(container.get(PartyService.class)),
+                new PartyFollowAll(container.get(PartyService.class)), };
     }
 }

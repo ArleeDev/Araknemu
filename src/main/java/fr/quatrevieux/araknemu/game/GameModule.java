@@ -174,9 +174,9 @@ import fr.quatrevieux.araknemu.game.fight.ai.simulation.effect.StealLifeSimulato
 import fr.quatrevieux.araknemu.game.fight.ai.simulation.effect.SwitchPositionOnAttackSimulator;
 import fr.quatrevieux.araknemu.game.fight.builder.ChallengeBuilderFactory;
 import fr.quatrevieux.araknemu.game.fight.builder.PvmBuilderFactory;
+import fr.quatrevieux.araknemu.game.fight.castable.closeCombat.CloseCombatValidator;
 import fr.quatrevieux.araknemu.game.fight.castable.effect.Element;
 import fr.quatrevieux.araknemu.game.fight.castable.spell.SpellConstraintsValidator;
-import fr.quatrevieux.araknemu.game.fight.castable.closeCombat.CloseCombatValidator;
 import fr.quatrevieux.araknemu.game.fight.ending.reward.drop.action.AddExperience;
 import fr.quatrevieux.araknemu.game.fight.ending.reward.drop.action.AddItems;
 import fr.quatrevieux.araknemu.game.fight.ending.reward.drop.action.AddKamas;
@@ -1090,13 +1090,14 @@ public final class GameModule implements ContainerModule {
             container.get(fr.quatrevieux.araknemu.core.event.Dispatcher.class)
         ));
 
-        configurator.persist(PartyInviteService.class, container -> new PartyInviteService());
-
         configurator.persist(PartyService.class, container -> new PartyService(
-                container.get(PlayerService.class),
-                container.get(PartyInviteService.class),
                 container.get(ExplorationMapService.class),
                 container.get(GameConfiguration.class)
+        ));
+
+        configurator.persist(PartyInviteService.class, container -> new PartyInviteService(
+                container.get(PlayerService.class),
+                container.get(PartyService.class)
         ));
     }
 }
