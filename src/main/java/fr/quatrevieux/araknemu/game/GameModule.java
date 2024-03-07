@@ -242,6 +242,8 @@ import fr.quatrevieux.araknemu.game.monster.group.generator.FixedMonsterListGene
 import fr.quatrevieux.araknemu.game.monster.group.generator.MonsterListGeneratorSwitch;
 import fr.quatrevieux.araknemu.game.monster.group.generator.RandomMonsterListGenerator;
 import fr.quatrevieux.araknemu.game.monster.reward.MonsterRewardService;
+import fr.quatrevieux.araknemu.game.party.PartyInviteService;
+import fr.quatrevieux.araknemu.game.party.PartyService;
 import fr.quatrevieux.araknemu.game.player.PlayerService;
 import fr.quatrevieux.araknemu.game.player.experience.PlayerExperienceService;
 import fr.quatrevieux.araknemu.game.player.inventory.InventoryService;
@@ -1086,6 +1088,15 @@ public final class GameModule implements ContainerModule {
             container.get(PlayerService.class),
             container.get(GameConfiguration.class),
             container.get(fr.quatrevieux.araknemu.core.event.Dispatcher.class)
+        ));
+
+        configurator.persist(PartyInviteService.class, container -> new PartyInviteService());
+
+        configurator.persist(PartyService.class, container -> new PartyService(
+                container.get(PlayerService.class),
+                container.get(PartyInviteService.class),
+                container.get(ExplorationMapService.class),
+                container.get(GameConfiguration.class)
         ));
     }
 }

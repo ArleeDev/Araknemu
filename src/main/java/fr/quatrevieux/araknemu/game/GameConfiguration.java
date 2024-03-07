@@ -197,6 +197,13 @@ public final class GameConfiguration {
         return new FightConfiguration();
     }
 
+    /**
+     * Get the configuration for the party system
+     */
+    public PartyConfiguration party() {
+        return new PartyConfiguration();
+    }
+
     public final class PlayerConfiguration {
         /**
          * The player name regex
@@ -449,6 +456,17 @@ public final class GameConfiguration {
          */
         public @NonNegative int initialErosion() {
             return pool.nonNegativeInteger("fight.initialErosion", 10);
+        }
+    }
+
+    public final class PartyConfiguration
+    {
+        /**
+         * Maximum amount of players allowed in one party
+         * Default value: 8
+         */
+        public @NonNegative int maxSize() {
+            return pool.nonNegativeInteger("party.maxSize", 8);
         }
     }
 }
