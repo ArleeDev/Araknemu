@@ -58,12 +58,38 @@ public class PartyService
 
 	public void startFollowAll(GamePlayer requestor, int targetId)
 	{
-
+		getIfContains(requestor).ifPresentOrElse(party ->
+		{
+			getIfContains(targetId).ifPresentOrElse(target -> {
+				if(party.partyPlayers.containsKey(target))
+				{
+					if(party.leader.equals(requestor))
+						party.partyPlayers.keySet().stream().filter(player-> !player.equals(target)).forEach(player -> startFollow(player,targetId)); //happyflow
+					else
+						throw new RuntimeException("Player("+requestor.name()+") requesting followAll is not the party's leader");
+				}
+				else
+					requestor.send(new PartyFollowResponse.FailedNotGrouped()); //requestor and target not in same group
+			}, () -> requestor.send(new PartyFollowResponse.FailedNotGrouped())); //target not grouped
+		}, () -> requestor.send(new PartyFollowResponse.FailedNotGrouped()));	//requestor not grouped
 	}
 
 	public void stopFollowAll(GamePlayer requestor, int targetId)
 	{
-
+		getIfContains(requestor).ifPresentOrElse(party ->
+		{
+			getIfContains(targetId).ifPresentOrElse(target -> {
+				if(party.partyPlayers.containsKey(target))
+				{
+					if(party.leader.equals(requestor))
+						party.partyPlayers.keySet().stream().filter(player-> !player.equals(target)).forEach(player -> stopFollow(player,targetId)); //happyflow
+					else
+						throw new RuntimeException("Player("+requestor.name()+") requesting stopFollowAll is not the party's leader");
+				}
+				else
+					requestor.send(new PartyFollowResponse.FailedNotGrouped()); //requestor and target not in same group
+			}, () -> requestor.send(new PartyFollowResponse.FailedNotGrouped())); //target not grouped
+		}, () -> requestor.send(new PartyFollowResponse.FailedNotGrouped()));	//requestor not grouped
 	}
 
 

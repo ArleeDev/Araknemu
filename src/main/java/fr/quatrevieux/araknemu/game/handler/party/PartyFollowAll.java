@@ -26,9 +26,9 @@ public class PartyFollowAll implements PacketHandler<GameSession, PartyFollowAll
             partyService.stopFollowAll(requestor,packet.targetId);
     }
 
-    @Override
-    public Class<PartyFollowAllRequest> packet()
-    {
-        return null;
-    }
+	@Override
+	public Class<PartyFollowAllRequest> packet()
+	{
+		return PartyFollowAllRequest.class;
+	}
 }
