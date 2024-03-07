@@ -387,7 +387,7 @@ public class PartyService //TODO: refactor functions - return errorpackets in so
 				GamePlayer lastPlayer = party.partyPlayers.keySet().iterator().next();
 				leaveParty(party, lastPlayer, lastPlayer);
 			}
-			else
+			else if(!party.partyPlayers.keySet().isEmpty())
 			{
 				if(party.leader.equals(leaver))
 				{
