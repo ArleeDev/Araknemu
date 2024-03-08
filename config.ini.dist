@@ -12,7 +12,7 @@ server.port = 4444
 ; Dofus client Configuration
 ; --------------------------
 ; > The required Dofus client version for logged in. Default "1.29.1"
-client.version = 1.29.1
+client.version = 1.39.5
 
 ; Password
 ; --------
