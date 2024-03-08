@@ -28,6 +28,7 @@ import fr.quatrevieux.araknemu.game.handler.EnsureFightingOrSpectator;
 import fr.quatrevieux.araknemu.game.handler.EnsureInactiveFight;
 import fr.quatrevieux.araknemu.game.handler.EnsurePlaying;
 import fr.quatrevieux.araknemu.game.handler.account.BoostCharacteristic;
+import fr.quatrevieux.araknemu.game.handler.account.RestatCharacter;
 import fr.quatrevieux.araknemu.game.handler.chat.SaveSubscription;
 import fr.quatrevieux.araknemu.game.handler.chat.SendMessage;
 import fr.quatrevieux.araknemu.game.handler.chat.SpamCheckAttachment;
@@ -75,6 +76,7 @@ public final class PlayingLoader extends AbstractLoader {
                 new PartyLeave(container.get(PartyService.class)),
                 new PartyPositions(container.get(PartyService.class)),
                 new PartyFollow(container.get(PartyService.class)),
-                new PartyFollowAll(container.get(PartyService.class)), };
+                new PartyFollowAll(container.get(PartyService.class)),
+                new EnsureInactiveFight(new RestatCharacter()), };
     }
 }

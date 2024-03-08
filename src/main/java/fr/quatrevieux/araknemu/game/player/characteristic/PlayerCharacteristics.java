@@ -33,6 +33,11 @@ import fr.quatrevieux.araknemu.game.world.creature.characteristics.Characteristi
 import fr.quatrevieux.araknemu.game.world.creature.characteristics.DefaultCharacteristics;
 import fr.quatrevieux.araknemu.game.world.creature.characteristics.MutableCharacteristics;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * Characteristic map for player
  * This class will handle aggregation of stats, and computed stats
@@ -98,10 +103,7 @@ public final class PlayerCharacteristics implements CharacterCharacteristics {
      * @throws IllegalStateException When the character has no enough points for boost the required characteristic
      */
     public void boostCharacteristic(Characteristic characteristic) {
-        final BoostStatsData.Interval interval = race.boost(
-            characteristic,
-            base.get(characteristic)
-        );
+        final BoostStatsData.Interval interval = race.boost(characteristic, base.get(characteristic));
 
         final int points = entity.boostPoints() - interval.cost();
 
@@ -118,37 +120,85 @@ public final class PlayerCharacteristics implements CharacterCharacteristics {
         return entity.boostPoints();
     }
 
+    /**
+     * Boost a characteristic by amount, or until out of boostpoints
+     */
+    public void boostCharacteristic(Characteristic characteristic, int amount) {
+        int remainingPoints = entity.boostPoints();
+        final int initAmount = base.get(characteristic);
+        int add = 0;
+
+        while (add < amount) {
+            final BoostStatsData.Interval interval = race.boost(characteristic, initAmount + add);
+
+            if (remainingPoints - interval.cost() >= 0) {
+                remainingPoints -= interval.cost();
+                add++;
+            } else {
+                break;
+            }
+        }
+
+        if (remainingPoints < 1) {
+            throw new RuntimeException("Not enough points for boost stats");
+        }
+
+        entity.setBoostPoints(remainingPoints);
+        base.add(characteristic, add);
+    }
+
+    /**
+     * Calculates the amount of characteristics points a player has spent, sets their characteristics to 0 and refunds them the points
+     * TODO: check if safe with scrolls and items
+     */
+    public void restat() {
+        final List<Characteristic> stats = new ArrayList<>();
+        stats.add(Characteristic.VITALITY);
+        stats.add(Characteristic.WISDOM);
+        stats.add(Characteristic.STRENGTH);
+        stats.add(Characteristic.INTELLIGENCE);
+        stats.add(Characteristic.LUCK);
+        stats.add(Characteristic.AGILITY);
+
+        final int basePoints = stats.stream().mapToInt(this::getPointsFromBase).sum();
+        if (basePoints > 0) {
+            final Map<Characteristic, Integer> values = stats.stream().filter(s -> base.get(s) != 0).collect(Collectors.toMap(s -> s, s -> 0));
+
+            entity.setBoostPoints(entity.boostPoints() + basePoints);
+            base.setAll(values);
+        }
+    }
+
+    private int getPointsFromBase(Characteristic stat) {
+        final int pointsInStat = base.get(stat);
+        int currentPoint = 0;
+        int characteristicsPointsSpent = 0;
+
+        while (currentPoint < pointsInStat) {
+            final BoostStatsData.Interval interval = race.boost(stat, currentPoint);
+
+            characteristicsPointsSpent += interval.cost();
+            currentPoint++;
+        }
+
+        return characteristicsPointsSpent;
+    }
+
     @Override
     public int initiative() {
-        final int value =
-            race.initiative(player.properties().life().max())
-            + get(Characteristic.STRENGTH)
-            + get(Characteristic.LUCK)
-            + get(Characteristic.AGILITY)
-            + get(Characteristic.INTELLIGENCE)
-            + specials.get(SpecialEffects.Type.INITIATIVE)
-        ;
+        final int value = race.initiative(player.properties().life().max()) + get(Characteristic.STRENGTH) + get(Characteristic.LUCK) + get(Characteristic.AGILITY) + get(Characteristic.INTELLIGENCE) + specials.get(SpecialEffects.Type.INITIATIVE);
 
-        return Math.max(
-            value * player.properties().life().current() / player.properties().life().max(),
-            1
-        );
+        return Math.max(value * player.properties().life().current() / player.properties().life().max(), 1);
     }
 
     @Override
     public int discernment() {
-        return race.startDiscernment()
-            + get(Characteristic.LUCK) / 10
-            + specials.get(SpecialEffects.Type.DISCERNMENT)
-        ;
+        return race.startDiscernment() + get(Characteristic.LUCK) / 10 + specials.get(SpecialEffects.Type.DISCERNMENT);
     }
 
     @Override
     public int pods() {
-        return race.startPods()
-            + specials.get(SpecialEffects.Type.PODS)
-            + get(Characteristic.STRENGTH) * 5
-        ;
+        return race.startPods() + specials.get(SpecialEffects.Type.PODS) + get(Characteristic.STRENGTH) * 5;
     }
 
     /**
