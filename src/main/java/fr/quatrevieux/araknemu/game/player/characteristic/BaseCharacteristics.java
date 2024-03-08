@@ -26,6 +26,8 @@ import fr.quatrevieux.araknemu.game.player.characteristic.event.CharacteristicsC
 import fr.quatrevieux.araknemu.game.player.race.GamePlayerRace;
 import fr.quatrevieux.araknemu.game.world.creature.characteristics.MutableCharacteristics;
 
+import java.util.Map;
+
 /**
  * Characteristics wrapper for player base stats
  */
@@ -48,6 +50,16 @@ public final class BaseCharacteristics implements MutableCharacteristics {
     @Override
     public void set(Characteristic characteristic, int value) {
         player.stats().set(characteristic, value);
+
+        dispatcher.dispatch(new CharacteristicsChanged());
+    }
+
+    /**
+     * Sets all stats in map then updates the UI once to reflect all the changes in one call
+     */
+    @Override
+    public void setAll(Map<Characteristic, Integer> values) {
+        values.forEach((k, v) -> player.stats().set(k, v));
 
         dispatcher.dispatch(new CharacteristicsChanged());
     }

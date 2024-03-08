@@ -27,6 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AskBoostTest {
     @Test
     void parse() {
-        assertEquals(Characteristic.STRENGTH, new AskBoost.Parser().parse("10").characteristic());
+        assertEquals(Characteristic.STRENGTH, new AskBoost.Parser().parse("1;10;1").characteristic());
     }
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Araknemu.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Copyright (c) 2017-2019 Vincent Quatrevieux
+ * Copyright (c) 2017-2024 ArleeDev
  */
 
 package fr.quatrevieux.araknemu.game.handler.account;
@@ -22,29 +22,36 @@ package fr.quatrevieux.araknemu.game.handler.account;
 import fr.quatrevieux.araknemu.core.network.exception.ErrorPacket;
 import fr.quatrevieux.araknemu.core.network.parser.PacketHandler;
 import fr.quatrevieux.araknemu.network.game.GameSession;
-import fr.quatrevieux.araknemu.network.game.in.account.AskBoost;
+import fr.quatrevieux.araknemu.network.game.in.account.AskRestat;
 import fr.quatrevieux.araknemu.network.game.out.basic.Noop;
 import org.checkerframework.checker.nullness.util.NullnessUtil;
 
-/**
- * Boost player characteristic
- */
-public final class BoostCharacteristic implements PacketHandler<GameSession, AskBoost> {
+public class RestatCharacter implements PacketHandler<GameSession, AskRestat> {
+
     @Override
-    public void handle(GameSession session, AskBoost packet) throws Exception {
+    public void handle(GameSession session, AskRestat packet) throws Exception {
         try {
-            NullnessUtil.castNonNull(session.player())
-                    .properties()
-                    .characteristics()
-                    .boostCharacteristic(packet.characteristic(), packet.amount())
-            ;
+            validate(session, packet);
+            NullnessUtil.castNonNull(session.player()).properties().characteristics().restat();
         } catch (RuntimeException e) {
             throw new ErrorPacket(new Noop(), e);
         }
     }
 
     @Override
-    public Class<AskBoost> packet() {
-        return AskBoost.class;
+    public Class<AskRestat> packet() {
+        return AskRestat.class;
+    }
+
+    private boolean validate(GameSession session, AskRestat packet) {
+        if (session == null) {
+            throw new RuntimeException("current session does not exist");
+        } else if (session.player() == null) {
+            throw new RuntimeException("current session does not contain an active player");
+        } else if (NullnessUtil.castNonNull(session.player()).id() != packet.playerId()) {
+            throw new RuntimeException("current session playerId does not match packet's playerId");
+        }
+
+        return true;
     }
 }

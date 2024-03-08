@@ -42,6 +42,11 @@ public final class DefaultCharacteristics implements MutableCharacteristics {
     }
 
     @Override
+    public void setAll(Map<Characteristic, Integer> values) {
+        map.putAll(values);
+    }
+
+    @Override
     public void add(Characteristic characteristic, int value) {
         map.put(characteristic, map.getOrDefault(characteristic, 0) + value);
     }
@@ -61,7 +66,7 @@ public final class DefaultCharacteristics implements MutableCharacteristics {
 
     /**
      * Check equality from two abstract characteristics map
-     *
+     * <p>
      * Two characteristics map are equals if and only if all characteristic values are equals
      */
     public boolean equals(Characteristics other) {

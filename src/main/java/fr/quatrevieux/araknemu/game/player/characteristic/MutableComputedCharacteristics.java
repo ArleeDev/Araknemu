@@ -22,6 +22,8 @@ package fr.quatrevieux.araknemu.game.player.characteristic;
 import fr.quatrevieux.araknemu.data.constant.Characteristic;
 import fr.quatrevieux.araknemu.game.world.creature.characteristics.MutableCharacteristics;
 
+import java.util.Map;
+
 /**
  * Apply computed characteristics over a {@link MutableCharacteristics}
  */
@@ -33,6 +35,11 @@ public final class MutableComputedCharacteristics extends ComputedCharacteristic
     @Override
     public void set(Characteristic characteristic, int value) {
         inner.set(characteristic, value);
+    }
+
+    @Override
+    public void setAll(Map<Characteristic, Integer> values) {
+        values.forEach(inner::set);
     }
 
     @Override
