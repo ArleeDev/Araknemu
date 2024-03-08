@@ -56,8 +56,6 @@ public final class BaseCharacteristics implements MutableCharacteristics {
 
     /**
      * Sets all stats in map then updates the UI once to reflect all the changes in one call
-     *
-     * @param values
      */
     @Override
     public void setAll(Map<Characteristic, Integer> values) {
