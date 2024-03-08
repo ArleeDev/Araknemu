@@ -54,11 +54,11 @@ class BoostCharacteristicTest extends FightBaseCase {
         this.<Player>readField(gamePlayer(), "entity").setBoostPoints(10);
         requestStack.clear();
 
-        handler.handle(session, new AskBoost(Characteristic.INTELLIGENCE));
+        handler.handle(session, new AskBoost(gamePlayer().id(), Characteristic.INTELLIGENCE, 1));
 
         requestStack.assertAll(
-            new Stats(gamePlayer().properties()),
-            new InventoryWeight(gamePlayer())
+                new Stats(gamePlayer().properties()),
+                new InventoryWeight(gamePlayer())
         );
 
         assertEquals(151, gamePlayer().properties().characteristics().base().get(Characteristic.INTELLIGENCE));
@@ -70,7 +70,7 @@ class BoostCharacteristicTest extends FightBaseCase {
         this.<Player>readField(gamePlayer(), "entity").setBoostPoints(0);
         requestStack.clear();
 
-        assertThrows(ErrorPacket.class, () -> handler.handle(session, new AskBoost(Characteristic.INTELLIGENCE)));
+        assertThrows(ErrorPacket.class, () -> handler.handle(session, new AskBoost(gamePlayer().id(), Characteristic.INTELLIGENCE, 1)));
     }
 
     @Test
@@ -80,7 +80,7 @@ class BoostCharacteristicTest extends FightBaseCase {
         Fight fight = createFight();
         fight.start(new AlternateTeamFighterOrder());
 
-        assertErrorPacket(Error.cantDoDuringFight(), () -> handlePacket(new AskBoost(Characteristic.INTELLIGENCE)));
+        assertErrorPacket(Error.cantDoDuringFight(), () -> handlePacket(new AskBoost(gamePlayer().id(), Characteristic.INTELLIGENCE, 1)));
     }
 
     @Test
@@ -88,11 +88,11 @@ class BoostCharacteristicTest extends FightBaseCase {
         this.<Player>readField(gamePlayer(), "entity").setBoostPoints(10);
         requestStack.clear();
 
-        handlePacket(new AskBoost(Characteristic.INTELLIGENCE));
+        handlePacket(new AskBoost(gamePlayer().id(), Characteristic.INTELLIGENCE, 1));
 
         requestStack.assertAll(
-            new Stats(gamePlayer().properties()),
-            new InventoryWeight(gamePlayer())
+                new Stats(gamePlayer().properties()),
+                new InventoryWeight(gamePlayer())
         );
 
         assertEquals(151, gamePlayer().properties().characteristics().base().get(Characteristic.INTELLIGENCE));
@@ -105,7 +105,7 @@ class BoostCharacteristicTest extends FightBaseCase {
 
         Fight fight = createFight();
 
-        handlePacket(new AskBoost(Characteristic.INTELLIGENCE));
+        handlePacket(new AskBoost(gamePlayer().id(), Characteristic.INTELLIGENCE, 1));
 
         assertEquals(151, gamePlayer().properties().characteristics().base().get(Characteristic.INTELLIGENCE));
     }

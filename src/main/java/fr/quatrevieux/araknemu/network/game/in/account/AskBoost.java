@@ -27,28 +27,43 @@ import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Boost one characteristic
- *
- * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Account.as#L111
+ * <a href="https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Account.as#L111">...</a>
  */
 public final class AskBoost implements Packet {
+    private final int playerId;
     private final Characteristic characteristic;
+    private final int amount;
 
-    public AskBoost(Characteristic characteristic) {
+    public AskBoost(int playerId, Characteristic characteristic, int amount) {
+        this.playerId = playerId;
         this.characteristic = characteristic;
+        this.amount = amount;
+    }
+
+    public int playerId() {
+        return playerId;
     }
 
     public Characteristic characteristic() {
         return characteristic;
     }
 
+    public int amount() {
+        return amount;
+    }
+
     public static final class Parser implements SinglePacketParser<AskBoost> {
         @Override
         public AskBoost parse(String input) throws ParsePacketException {
-            return new AskBoost(
-                Characteristic.fromId(
-                    Integer.parseInt(input)
-                )
-            );
+            final String[] arr = input.split(";");
+            if (arr.length != 3) {
+                throw new RuntimeException("provided input format is invalid: " + input);
+            }
+
+            final int playerId = Integer.parseInt(arr[0]);
+            final Characteristic stat = Characteristic.fromId(Integer.parseInt(arr[1]));
+            final int amount = Integer.parseInt(arr[2]);
+            return new AskBoost(playerId, stat, amount);
         }
 
         @Override
