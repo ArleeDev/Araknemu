@@ -21,6 +21,8 @@ package fr.quatrevieux.araknemu.game.world.creature.characteristics;
 
 import fr.quatrevieux.araknemu.data.constant.Characteristic;
 
+import java.util.Map;
+
 /**
  * Interface for mutable characteristics map
  */
@@ -31,10 +33,15 @@ public interface MutableCharacteristics extends Characteristics {
     public void set(Characteristic characteristic, int value);
 
     /**
+     * Sets all values for the characteristics in map
+     */
+    public void setAll(Map<Characteristic, Integer> values);
+
+    /**
      * Add the characteristic value to the characteristics map
      *
      * @param characteristic Characteristic to modify
-     * @param value The value to add
+     * @param value          The value to add
      */
     public void add(Characteristic characteristic, int value);
 }
