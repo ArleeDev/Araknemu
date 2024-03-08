@@ -25,6 +25,8 @@ import fr.quatrevieux.araknemu.game.exploration.map.ExplorationMapService;
 import fr.quatrevieux.araknemu.game.exploration.map.FlagType;
 import fr.quatrevieux.araknemu.game.listener.party.LeavePartyOnDisconnect;
 import fr.quatrevieux.araknemu.game.listener.party.UpdateFollowersOnMapLoaded;
+import fr.quatrevieux.araknemu.game.listener.party.UpdatePartyOnLifeChanged;
+import fr.quatrevieux.araknemu.game.listener.party.UpdatePartyOnStatsChanged;
 import fr.quatrevieux.araknemu.game.player.GamePlayer;
 import fr.quatrevieux.araknemu.network.game.out.info.InfoCompassResponse;
 import fr.quatrevieux.araknemu.network.game.out.info.InfoCoordinateHighlightPlayerResponse;
@@ -212,6 +214,8 @@ public final class PartyService { //TODO: return errorpackets in some cases, sim
 
     private void registerListeners(GamePlayer player) {
         player.dispatcher().add(new LeavePartyOnDisconnect(player, this));
+        player.dispatcher().add(new UpdatePartyOnStatsChanged(player, this));
+        player.dispatcher().add(new UpdatePartyOnLifeChanged(player, this));
     }
 
     private void registerFollowListener(GamePlayer player) {
@@ -232,6 +236,7 @@ public final class PartyService { //TODO: return errorpackets in some cases, sim
 
     /**
      * Called by followListener. When updater loads a new map, updates the (mini)maps of all followers with a flag of the updater's position
+     *
      * @see FlagType
      */
     public void updateFollowers(GamePlayer updater) {
@@ -247,6 +252,20 @@ public final class PartyService { //TODO: return errorpackets in some cases, sim
 
         final Geolocation location = explorationMapService.load(partyPlayer.position().map()).geolocation();
         party.partyPlayers.get(partyPlayer).forEach(follower -> follower.send(new InfoCompassResponse(location.x(), location.y())));
+    }
+
+    /**
+     * Validates request. If validated: updates the UI of all members of trigger's party
+     */
+    public void updatePartyUI(GamePlayer trigger) {
+        if (getIfContainsKey(trigger).isEmpty()) {
+            throw new RuntimeException("Player(" + trigger.name() + ") triggered updateUI but is not in a party");
+        }
+
+        final Party party = getIfContainsKey(trigger).get();
+        final Set<GamePlayer> partyMembers = party.partyPlayers.keySet();
+
+        partyMembers.forEach(pl -> pl.send(new PartyUpdatedResponse.StatsChanged(partyMembers)));
     }
 
     private static final class Party {
@@ -315,6 +334,8 @@ public final class PartyService { //TODO: return errorpackets in some cases, sim
         private void unregisterListeners(GamePlayer player) {
             player.dispatcher().remove(UpdateFollowersOnMapLoaded.class);
             player.dispatcher().remove(LeavePartyOnDisconnect.class);
+            player.dispatcher().remove(UpdatePartyOnLifeChanged.class);
+            player.dispatcher().remove(UpdatePartyOnStatsChanged.class);
         }
 
         private Optional<GamePlayer> getIfContains(int playerid) {

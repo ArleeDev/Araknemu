@@ -79,10 +79,10 @@ public final class PartyUpdatedResponse {
      * (e.g. a partymember equipping a new item, changing their initiative and thus potentially the party order
      * <a href="https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Party.as#L232">...</a>
      */
-    public static final class Reorder { //TODO: impl with listener
+    public static final class StatsChanged {
         private final Set<GamePlayer> party;
 
-        public Reorder(Set<GamePlayer> party) {
+        public StatsChanged(Set<GamePlayer> party) {
             this.party = party;
         }
 
