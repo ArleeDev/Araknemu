@@ -104,12 +104,7 @@ public final class GameConfiguration {
      * Default value : "1,10,30,60,120"
      */
     public long[] shutdownReminderMinutes() {
-        return Arrays.stream(StringUtils.split(pool.string("shutdownReminderMinutes", "1,10,30,60,120"), ","))
-            .map(String::trim)
-            .mapToLong(Long::parseLong)
-            .sorted()
-            .toArray()
-        ;
+        return Arrays.stream(StringUtils.split(pool.string("shutdownReminderMinutes", "1,10,30,60,120"), ",")).map(String::trim).mapToLong(Long::parseLong).sorted().toArray();
     }
 
     /**
@@ -140,14 +135,12 @@ public final class GameConfiguration {
     /**
      * Does preload is enabled for the given service
      * By default this value is true
-     *
+     * <p>
      * In case of submodule (i.e. preload.service.submodule), the preload will be checked on each part.
      * So if "preload.service" is false, "preload.service.submodule" will be considered as false
      *
      * @param service The service name
-     *
      * @return true if preload is enabled
-     *
      * @see PreloadableService#name() For the name of the server
      */
     public boolean preload(String service) {
@@ -197,6 +190,13 @@ public final class GameConfiguration {
         return new FightConfiguration();
     }
 
+    /**
+     * Get the configuration for the party system
+     */
+    public PartyConfiguration party() {
+        return new PartyConfiguration();
+    }
+
     public final class PlayerConfiguration {
         /**
          * The player name regex
@@ -243,7 +243,7 @@ public final class GameConfiguration {
         /**
          * Minimum level which needs secret answer for delete the character
          * By default, value is set to 20
-         *
+         * <p>
          * To change this value, you should also change in lang.swf, the value `C.SECRET_ANSWER_SINCE_LEVEL`
          */
         public @Positive int deleteAnswerLevel() {
@@ -287,7 +287,7 @@ public final class GameConfiguration {
     public final class ChatConfiguration {
         /**
          * Get the waiting time in seconds for global channel flood
-         *
+         * <p>
          * Set to -1 for deactivate
          */
         public int floodTime() {
@@ -375,7 +375,7 @@ public final class GameConfiguration {
         /**
          * Get the selling item to an NPC price multiplier
          * By default 0.1
-         *
+         * <p>
          * Should corresponds to "C.SELL_PRICE_MULTIPLICATOR" in lang_xx_xxx.swf
          */
         public double npcSellPriceMultiplier() {
@@ -449,6 +449,16 @@ public final class GameConfiguration {
          */
         public @NonNegative int initialErosion() {
             return pool.nonNegativeInteger("fight.initialErosion", 10);
+        }
+    }
+
+    public final class PartyConfiguration {
+        /**
+         * Maximum amount of players allowed in one party
+         * Default value: 8
+         */
+        public @NonNegative int maxSize() {
+            return pool.nonNegativeInteger("party.maxSize", 8);
         }
     }
 }

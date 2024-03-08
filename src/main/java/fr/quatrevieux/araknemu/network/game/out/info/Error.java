@@ -83,7 +83,7 @@ public final class Error extends AbstractInformationMessage {
      * Cannot cast the spell : not enough action points
      *
      * @param available The available action points
-     * @param required The required action points for cast the spell
+     * @param required  The required action points for cast the spell
      */
     public static Error cantCastNotEnoughActionPoints(int available, int required) {
         return new Error(170, available, required);
@@ -127,7 +127,7 @@ public final class Error extends AbstractInformationMessage {
     /**
      * Cannot cast the spell : the cell is out of range
      *
-     * @param range The spell range
+     * @param range    The spell range
      * @param distance The cell distance
      */
     public static Error cantCastBadRange(Interval range, int distance) {
@@ -189,7 +189,6 @@ public final class Error extends AbstractInformationMessage {
      * Cannot cast the invocation spell : maximum summoned created number is reached
      *
      * @param max Actual maximum summoned creatures
-     *
      * @see fr.quatrevieux.araknemu.data.constant.Characteristic#MAX_SUMMONED_CREATURES Characteristic value to pass as parameter
      */
     public static Error cantCastMaxSummonedCreaturesReached(int max) {
@@ -197,10 +196,16 @@ public final class Error extends AbstractInformationMessage {
     }
 
     /**
+     * Guild/party requests fail if the target is occupied
+     */
+    public static Error cantInvitePlayerBusy() {
+        return new Error(209);
+    }
+
+    /**
      * Create and cache a simple Error with a code
      *
      * @param code The error code
-     *
      * @return The Error instance
      */
     private static Error forCode(int code) {
