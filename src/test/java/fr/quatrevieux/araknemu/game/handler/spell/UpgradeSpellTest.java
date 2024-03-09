@@ -55,7 +55,7 @@ class UpgradeSpellTest extends FightBaseCase {
     @Test
     void upgradeSpellNotFound() throws Exception {
         try {
-            handler.handle(session, new SpellUpgrade(-1));
+            handler.handle(session, new SpellUpgrade(-1, -1));
 
             fail("ErrorPacket should be thrown");
         } catch (ErrorPacket e) {
@@ -68,7 +68,7 @@ class UpgradeSpellTest extends FightBaseCase {
         this.<Player>readField(gamePlayer(), "entity").setSpellPoints(0);
 
         try {
-            handler.handle(session, new SpellUpgrade(3));
+            handler.handle(session, new SpellUpgrade(-1, 3));
 
             fail("ErrorPacket should be thrown");
         } catch (ErrorPacket e) {
@@ -80,15 +80,15 @@ class UpgradeSpellTest extends FightBaseCase {
     void upgradeSuccess() throws Exception {
         this.<Player>readField(gamePlayer(), "entity").setSpellPoints(5);
 
-        handler.handle(session, new SpellUpgrade(3));
+        handler.handle(session, new SpellUpgrade(-1, 3));
 
         SpellBookEntry entry = gamePlayer().properties().spells().entry(3);
         assertEquals(4, gamePlayer().properties().spells().upgradePoints());
         assertEquals(2, entry.spell().level());
 
         requestStack.assertAll(
-            new UpdateSpell(entry),
-            new Stats(gamePlayer().properties())
+                new UpdateSpell(entry),
+                new Stats(gamePlayer().properties())
         );
 
         assertEquals(4, dataSet.refresh(new Player(1)).spellPoints());
@@ -104,15 +104,15 @@ class UpgradeSpellTest extends FightBaseCase {
         gamePlayer().properties().spells().learn(container.get(SpellService.class).get(202));
         requestStack.clear();
 
-        handler.handle(session, new SpellUpgrade(202));
+        handler.handle(session, new SpellUpgrade(-1, 202));
 
         SpellBookEntry entry = gamePlayer().properties().spells().entry(202);
         assertEquals(4, gamePlayer().properties().spells().upgradePoints());
         assertEquals(2, entry.spell().level());
 
         requestStack.assertAll(
-            new UpdateSpell(entry),
-            new Stats(gamePlayer().properties())
+                new UpdateSpell(entry),
+                new Stats(gamePlayer().properties())
         );
 
         assertEquals(4, dataSet.refresh(new Player(1)).spellPoints());
@@ -126,22 +126,22 @@ class UpgradeSpellTest extends FightBaseCase {
         Fight fight = createFight();
         fight.start(new AlternateTeamFighterOrder());
 
-        assertErrorPacket(Error.cantDoDuringFight(), () -> handlePacket(new SpellUpgrade(3)));
+        assertErrorPacket(Error.cantDoDuringFight(), () -> handlePacket(new SpellUpgrade(-1, 3)));
     }
 
     @Test
     void functionalSuccess() throws Exception {
         this.<Player>readField(gamePlayer(), "entity").setSpellPoints(5);
 
-        handlePacket(new SpellUpgrade(3));
+        handlePacket(new SpellUpgrade(-1, 3));
 
         SpellBookEntry entry = gamePlayer().properties().spells().entry(3);
         assertEquals(4, gamePlayer().properties().spells().upgradePoints());
         assertEquals(2, entry.spell().level());
 
         requestStack.assertAll(
-            new UpdateSpell(entry),
-            new Stats(gamePlayer().properties())
+                new UpdateSpell(entry),
+                new Stats(gamePlayer().properties())
         );
     }
 }

@@ -44,6 +44,7 @@ import fr.quatrevieux.araknemu.game.handler.party.PartyFollow;
 import fr.quatrevieux.araknemu.game.handler.party.PartyFollowAll;
 import fr.quatrevieux.araknemu.game.handler.party.PartyLeave;
 import fr.quatrevieux.araknemu.game.handler.party.PartyPositions;
+import fr.quatrevieux.araknemu.game.handler.spell.DowngradeSpell;
 import fr.quatrevieux.araknemu.game.handler.spell.MoveSpell;
 import fr.quatrevieux.araknemu.game.handler.spell.UpgradeSpell;
 import fr.quatrevieux.araknemu.game.party.PartyInviteService;
@@ -68,6 +69,7 @@ public final class PlayingLoader extends AbstractLoader {
                 new EnsureInactiveFight(new RemoveObject()),
                 new EnsureInactiveFight(new BoostCharacteristic()),
                 new EnsureInactiveFight(new UpgradeSpell()),
+                new EnsureInactiveFight(new DowngradeSpell()),
                 new MoveSpell(),
                 new EnsureFightingOrSpectator(new LeaveFight(), new LeaveSpectatorFight()),
                 new InviteAsk(container.get(PartyInviteService.class)),

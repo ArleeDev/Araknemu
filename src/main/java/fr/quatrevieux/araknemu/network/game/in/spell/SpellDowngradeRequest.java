@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Araknemu.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Copyright (c) 2017-2019 Vincent Quatrevieux
+ * Copyright (c) 2017-2024 ArleeDev
  */
 
 package fr.quatrevieux.araknemu.network.game.in.spell;
@@ -28,14 +28,13 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
- * Ask for upgrade a spell
- * <a href="https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Spells.as#L23">...</a>
+ * Ask for downgrade a spell
  */
-public final class SpellUpgrade implements Packet {
+public final class SpellDowngradeRequest implements Packet {
     private final @NonNegative int heroId;
     private final @NonNegative int spellId;
 
-    public SpellUpgrade(@NonNegative int heroId, @NonNegative int spellId) {
+    public SpellDowngradeRequest(@NonNegative int heroId, @NonNegative int spellId) {
         this.heroId = heroId;
         this.spellId = spellId;
     }
@@ -48,18 +47,18 @@ public final class SpellUpgrade implements Packet {
         return spellId;
     }
 
-    public static final class Parser implements SinglePacketParser<SpellUpgrade> {
+    public static final class Parser implements SinglePacketParser<SpellDowngradeRequest> {
         @Override
-        public SpellUpgrade parse(String input) throws ParsePacketException {
+        public SpellDowngradeRequest parse(String input) throws ParsePacketException {
             final PacketTokenizer tokenizer = tokenize(input, ';');
 
-            return new SpellUpgrade(ParseUtils.parseNonNegativeInt(tokenizer.nextPart()), //heroID
+            return new SpellDowngradeRequest(ParseUtils.parseNonNegativeInt(tokenizer.nextPart()), //heroID
                     ParseUtils.parseNonNegativeInt(tokenizer.nextPart())); //spellID
         }
 
         @Override
         public @MinLen(2) String code() {
-            return "SB";
+            return "Aps";
         }
     }
 }

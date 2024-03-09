@@ -14,21 +14,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Araknemu.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Copyright (c) 2017-2019 Vincent Quatrevieux
+ * Copyright (c) 2017-2024 ArleeDev
  */
 
-package fr.quatrevieux.araknemu.network.game.in.spell;
+package fr.quatrevieux.araknemu.network.game.out.spell;
 
-import org.junit.jupiter.api.Test;
+public class SpellDowngradeError {
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class SpellUpgradeTest {
-    @Test
-    void parse() {
-        assertEquals(
-                123,
-                new SpellUpgrade.Parser().parse("1;123").spellId()
-        );
+    @Override
+    public String toString() {
+        return "SDE";
     }
 }

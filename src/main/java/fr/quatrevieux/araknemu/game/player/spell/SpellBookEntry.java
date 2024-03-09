@@ -104,6 +104,28 @@ public final class SpellBookEntry {
     }
 
     /**
+     * Downgrade the spell to the previous level
+     */
+    @SuppressWarnings("argument") //Error for prevLevel==0, but we throw error on entity.level==1, prevlevel cant be 0
+    public void downgrade() {
+        if (entity.level() == 1) {
+            throw new IllegalStateException("Spell is at minimum level");
+        }
+
+        final int prevLevel = entity.level() - 1;
+        final Spell nextSpell = spell.level(prevLevel);
+
+        if (!spellBook.canDowngrade(nextSpell)) {
+            throw new IllegalStateException("Cannot downgrade spell");
+        }
+
+        spellBook.addPointsForDowngrade(nextSpell);
+        entity.setLevel(prevLevel);
+
+        spellBook.dispatch(new SpellUpgraded(this));
+    }
+
+    /**
      * Get the entity
      *
      * /!\ Internal method for listeners
