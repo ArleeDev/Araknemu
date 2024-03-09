@@ -73,10 +73,10 @@ public final class SpellBook implements SpellList, Dispatcher {
     @Override
     public Iterator<Spell> iterator() {
         return entries.values().stream()
-            .map(SpellBookEntry::spell)
-            .filter(spell -> spell.minPlayerLevel() <= player.level())
-            .iterator()
-        ;
+                .map(SpellBookEntry::spell)
+                .filter(spell -> spell.minPlayerLevel() <= player.level())
+                .iterator()
+                ;
     }
 
     /**
@@ -131,9 +131,9 @@ public final class SpellBook implements SpellList, Dispatcher {
         }
 
         final SpellBookEntry entry = new SpellBookEntry(
-            this,
-            new PlayerSpell(player.id(), spell.id(), false),
-            spell
+                this,
+                new PlayerSpell(player.id(), spell.id(), false),
+                spell
         );
 
         entries.put(spell.id(), entry);
@@ -157,7 +157,7 @@ public final class SpellBook implements SpellList, Dispatcher {
     /**
      * Check if the entry already exists on the spell book
      * Unlike {@link SpellBook#has(int)} the level of the player is not checked
-     *
+     * <p>
      * /!\ Internal method /!\
      */
     boolean hasEntry(int spellId) {
@@ -166,7 +166,7 @@ public final class SpellBook implements SpellList, Dispatcher {
 
     /**
      * Add an entry to the spell book
-     *
+     * <p>
      * /!\ Internal method /!\
      */
     void addEntry(PlayerSpell entity, SpellLevels spell) {
@@ -205,9 +205,17 @@ public final class SpellBook implements SpellList, Dispatcher {
         player.setSpellPoints(player.spellPoints() - spell.level() + 1);
     }
 
+    void addPointsForDowngrade(Spell spell) {
+        player.setSpellPoints(player.spellPoints() + spell.level());
+    }
+
     boolean canUpgrade(Spell spell) {
         return player.spellPoints() >= spell.level() - 1
-            && player.level() >= spell.minPlayerLevel()
-        ;
+                && player.level() >= spell.minPlayerLevel()
+                ;
+    }
+
+    boolean canDowngrade(Spell spell) {
+        return player.level() >= spell.minPlayerLevel();
     }
 }
