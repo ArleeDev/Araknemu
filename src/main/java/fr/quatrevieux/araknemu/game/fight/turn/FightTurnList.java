@@ -22,7 +22,6 @@ package fr.quatrevieux.araknemu.game.fight.turn;
 import fr.quatrevieux.araknemu.game.fight.Fight;
 import fr.quatrevieux.araknemu.game.fight.fighter.Fighter;
 import fr.quatrevieux.araknemu.game.fight.fighter.PlayableFighter;
-import fr.quatrevieux.araknemu.game.fight.map.FightCell;
 import fr.quatrevieux.araknemu.game.fight.turn.event.NextTurnInitiated;
 import fr.quatrevieux.araknemu.game.fight.turn.event.TurnListChanged;
 import fr.quatrevieux.araknemu.game.fight.turn.order.FighterOrderStrategy;
@@ -67,7 +66,6 @@ public final class FightTurnList {
      * Remove a fighter from turn list
      *
      * @param fighter Fighter to remove
-     *
      * @see TurnListChanged Event triggered after the list is updated
      */
     public void remove(PlayableFighter fighter) {
@@ -95,11 +93,10 @@ public final class FightTurnList {
 
     /**
      * Add a fighter after the current one
-     *
-     * Note: this method should not be called directly, use {@link fr.quatrevieux.araknemu.game.fight.FighterList#joinTurnList(Fighter, FightCell)} instead
+     * <p>
+     * Note: this method should not be called directly, use  instead
      *
      * @param fighter Fighter to add
-     *
      * @see TurnListChanged Event triggered after the list is updated
      */
     public void add(PlayableFighter fighter) {
@@ -122,6 +119,38 @@ public final class FightTurnList {
     public PlayableFighter currentFighter() {
         return current;
     }
+
+    public Fighter nextFighter() {
+        final List<PlayableFighter> fighters = NullnessUtil.castNonNull(this.fighters);
+        boolean found = false;
+        int currentIndex = 0;
+        while (!found) {
+            if (fighters.get(currentIndex).equals(currentFighter())) {
+                found = true;
+            } else {
+                currentIndex++;
+            }
+        }
+
+        int nextIndex = currentIndex;
+        Fighter next = null;
+        while (next == null) {
+            if (nextIndex + 1 > fighters.size() - 1) {
+                nextIndex = 0;
+            } else {
+                nextIndex++;
+            }
+
+            if (fighters.get(nextIndex).dead()) {
+                continue;
+            } else {
+                next = fighters.get(nextIndex);
+            }
+        }
+
+        return next;
+    }
+
 
     /**
      * Start the turn system

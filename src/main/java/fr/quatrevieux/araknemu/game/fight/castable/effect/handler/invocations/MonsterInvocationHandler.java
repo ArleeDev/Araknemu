@@ -24,16 +24,19 @@ import fr.quatrevieux.araknemu.game.fight.castable.FightCastScope;
 import fr.quatrevieux.araknemu.game.fight.fighter.Fighter;
 import fr.quatrevieux.araknemu.game.fight.fighter.FighterFactory;
 import fr.quatrevieux.araknemu.game.fight.fighter.PlayableFighter;
+import fr.quatrevieux.araknemu.game.fight.fighter.invocation.ControlledInvocationFighter;
 import fr.quatrevieux.araknemu.game.fight.fighter.invocation.InvocationFighter;
+import fr.quatrevieux.araknemu.game.fight.fighter.player.PlayerFighter;
+import fr.quatrevieux.araknemu.game.monster.Monster;
 import fr.quatrevieux.araknemu.game.monster.MonsterService;
 import fr.quatrevieux.araknemu.game.spell.effect.SpellEffect;
 import fr.quatrevieux.araknemu.network.game.out.fight.action.ActionEffect;
 
 /**
  * Handle monster invocation
- *
+ * <p>
  * A new fighter will be created and added to fight and timeline (turn list)
- *
+ * <p>
  * Effect parameters :
  * - #1 (min) : monster id
  * - #2 (max) : grade number
@@ -41,7 +44,7 @@ import fr.quatrevieux.araknemu.network.game.out.fight.action.ActionEffect;
  * @see InvocationFighter Invoked fighter
  */
 public final class MonsterInvocationHandler extends AbstractInvocationHandler {
-     private final MonsterService monsterService;
+    private final MonsterService monsterService;
 
     public MonsterInvocationHandler(MonsterService monsterService, FighterFactory fighterFactory, Fight fight) {
         super(fighterFactory, fight);
@@ -56,12 +59,24 @@ public final class MonsterInvocationHandler extends AbstractInvocationHandler {
 
     @Override
     protected PlayableFighter createInvocation(int id, Fighter invoker, SpellEffect effect) {
-        return new InvocationFighter(
-            id,
-            monsterService.load(effect.min()).get(effect.max()),
-            invoker.team(),
-            invoker
-        );
+        Monster invocation = monsterService.load(effect.min()).get(effect.max());
+
+        if (invocation.ai().equals("CONTROLLABLE") && invoker instanceof PlayerFighter)
+        {
+            return new ControlledInvocationFighter(
+                    (PlayerFighter) invoker,
+                    id,
+                    monsterService.load(effect.min()).get(effect.max()),
+                    invoker.team()
+            );
+        } else {
+            return new InvocationFighter(
+                    id,
+                    monsterService.load(effect.min()).get(effect.max()),
+                    invoker.team(),
+                    invoker
+            );
+        }
     }
 
     @Override

@@ -20,6 +20,7 @@
 package fr.quatrevieux.araknemu.game.fight.fighter;
 
 import fr.quatrevieux.araknemu.game.spell.Spell;
+import fr.quatrevieux.araknemu.game.spell.SpellList;
 import fr.quatrevieux.araknemu.game.spell.boost.SpellsBoosts;
 
 import java.util.Collections;
@@ -35,6 +36,12 @@ public final class EmptySpellList implements FighterSpellList {
     @Override
     public void boost(int spellId, SpellsBoosts.Modifier modifier, int value) {
         // do nothing
+    }
+
+    @Override
+    public SpellList get()
+    {
+        throw new NoSuchElementException();
     }
 
     @Override

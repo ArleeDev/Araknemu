@@ -21,12 +21,16 @@ package fr.quatrevieux.araknemu.game.fight.turn;
 
 import fr.quatrevieux.araknemu.game.fight.Fight;
 import fr.quatrevieux.araknemu.game.fight.exception.FightException;
+import fr.quatrevieux.araknemu.game.fight.fighter.Fighter;
 import fr.quatrevieux.araknemu.game.fight.fighter.PlayableFighter;
+import fr.quatrevieux.araknemu.game.fight.fighter.invocation.ControlledInvocationFighter;
+import fr.quatrevieux.araknemu.game.fight.fighter.player.PlayerFighter;
 import fr.quatrevieux.araknemu.game.fight.turn.action.ActionHandler;
 import fr.quatrevieux.araknemu.game.fight.turn.action.FightAction;
 import fr.quatrevieux.araknemu.game.fight.turn.event.TurnStarted;
 import fr.quatrevieux.araknemu.game.fight.turn.event.TurnStopped;
 import fr.quatrevieux.araknemu.game.fight.turn.event.TurnTerminated;
+import fr.quatrevieux.araknemu.network.game.out.fight.FighterSpellListResponse;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -99,8 +103,8 @@ public final class FightTurn implements Turn<FightAction> {
         fight.map().objects().onStartTurn(fighter);
 
         if (
-            fighter.dead()
-            || !fighter.buffs().onStartTurn()
+                fighter.dead()
+                        || !fighter.buffs().onStartTurn()
         ) {
             endTurnActions(true);
             return false;
@@ -128,6 +132,21 @@ public final class FightTurn implements Turn<FightAction> {
         actionHandler.terminated(() -> {
             fight.dispatch(new TurnStopped(this));
             fighter.stop();
+
+            Fighter next = fight.turnList().nextFighter();
+
+            if (next instanceof ControlledInvocationFighter && (fighter instanceof PlayerFighter || fighter instanceof ControlledInvocationFighter)) {
+                final ControlledInvocationFighter summon = (ControlledInvocationFighter) next;
+
+                summon.send("AI" + summon.id());
+                summon.send(new FighterSpellListResponse(summon.spells())); //swap scope to next summon
+            }
+            if (fighter instanceof ControlledInvocationFighter && !(next instanceof ControlledInvocationFighter)) {
+                final ControlledInvocationFighter summon = (ControlledInvocationFighter) fighter;
+
+                summon.send("AI" + summon.invoker().id());
+                summon.send(new FighterSpellListResponse(summon.invoker().spells())); //swap scope back to play
+            }
 
             endTurnActions(false);
 

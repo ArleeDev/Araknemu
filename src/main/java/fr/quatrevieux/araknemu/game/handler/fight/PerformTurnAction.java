@@ -22,6 +22,7 @@ package fr.quatrevieux.araknemu.game.handler.fight;
 import fr.quatrevieux.araknemu.core.network.exception.ErrorPacket;
 import fr.quatrevieux.araknemu.core.network.parser.PacketHandler;
 import fr.quatrevieux.araknemu.game.fight.fighter.PlayableFighter;
+import fr.quatrevieux.araknemu.game.fight.fighter.invocation.ControlledInvocationFighter;
 import fr.quatrevieux.araknemu.game.fight.turn.FightTurn;
 import fr.quatrevieux.araknemu.game.fight.turn.action.ActionType;
 import fr.quatrevieux.araknemu.network.game.GameSession;
@@ -36,8 +37,20 @@ public final class PerformTurnAction implements PacketHandler<GameSession, GameA
     @Override
     public void handle(GameSession session, GameActionRequest packet) {
         try {
-            final PlayableFighter fighter = NullnessUtil.castNonNull(session.fighter());
-            final FightTurn turn = fighter.turn();
+            PlayableFighter fighter = NullnessUtil.castNonNull(session.fighter());
+
+            FightTurn turn;
+
+            if (fighter.fight().turnList().currentFighter() instanceof ControlledInvocationFighter) { //allows summoner gameactions to be accepted upon controlledsummon's turn
+                if (NullnessUtil.castNonNull(fighter.fight().turnList().currentFighter().invoker()).equals(fighter)) {
+                    fighter = fighter.fight().turnList().currentFighter();
+                    turn = fighter.fight().turnList().currentFighter().turn();
+                } else {
+                    turn = fighter.turn();
+                }
+            } else {
+                turn = fighter.turn();
+            }
 
             turn.perform(fighter.fight().actions().create(fighter, ActionType.byId(packet.type()), packet.arguments()));
         } catch (Exception e) {

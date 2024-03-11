@@ -20,6 +20,7 @@
 package fr.quatrevieux.araknemu.game.fight.fighter.operation;
 
 import fr.quatrevieux.araknemu.game.fight.fighter.Fighter;
+import fr.quatrevieux.araknemu.game.fight.fighter.invocation.ControlledInvocationFighter;
 import fr.quatrevieux.araknemu.game.fight.fighter.invocation.DoubleFighter;
 import fr.quatrevieux.araknemu.game.fight.fighter.invocation.InvocationFighter;
 import fr.quatrevieux.araknemu.game.fight.fighter.invocation.StaticInvocationFighter;
@@ -36,40 +37,47 @@ public interface FighterOperation {
     /**
      * Apply the operation to a PlayerFighter
      */
-    public default void onPlayer(PlayerFighter fighter) {
+    default void onPlayer(PlayerFighter fighter) {
         onGenericFighter(fighter);
     }
 
     /**
      * Apply the operation to a MonsterFighter
      */
-    public default void onMonster(MonsterFighter fighter) {
+    default void onMonster(MonsterFighter fighter) {
         onGenericFighter(fighter);
     }
 
     /**
      * Apply the operation to an InvocationFighter
      */
-    public default void onInvocation(InvocationFighter fighter) {
+    default void onInvocation(InvocationFighter fighter) {
+        onGenericFighter(fighter);
+    }
+
+    /**
+     * Apply the operation to an InvocationFighter
+     */
+    default void onControlledInvocation(ControlledInvocationFighter fighter) {
         onGenericFighter(fighter);
     }
 
     /**
      * Apply the operation to an StaticInvocationFighter
      */
-    public default void onStaticInvocation(StaticInvocationFighter fighter) {
+    default void onStaticInvocation(StaticInvocationFighter fighter) {
         onGenericFighter(fighter);
     }
 
     /**
      * Apply the operation to a DoubleFighter
      */
-    public default void onDouble(DoubleFighter fighter) {
+    default void onDouble(DoubleFighter fighter) {
         onGenericFighter(fighter);
     }
 
     /**
      * Apply the operation to a generic fighter type
      */
-    public default void onGenericFighter(Fighter fighter) {}
+    default void onGenericFighter(Fighter fighter) {}
 }
