@@ -126,6 +126,8 @@ public final class Monster {
         return template.ai();
     }
 
+    public String name() { return template.name();}
+
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) {

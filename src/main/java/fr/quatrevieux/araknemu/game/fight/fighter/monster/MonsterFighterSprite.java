@@ -32,7 +32,7 @@ import fr.quatrevieux.araknemu.game.monster.Monster;
  *
  * https://github.com/Emudofus/Dofus/blob/1.29/dofus/aks/Game.as#L520
  */
-public final class MonsterFighterSprite implements FighterSprite {
+public class MonsterFighterSprite implements FighterSprite {
     private final Fighter fighter;
     private final Monster monster;
 

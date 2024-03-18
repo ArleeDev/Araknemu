@@ -21,11 +21,16 @@ package fr.quatrevieux.araknemu.game.listener.fight.turn;
 
 import fr.quatrevieux.araknemu.core.event.Listener;
 import fr.quatrevieux.araknemu.game.fight.Fight;
+import fr.quatrevieux.araknemu.game.fight.fighter.Fighter;
+import fr.quatrevieux.araknemu.game.fight.fighter.invocation.ControlledInvocationFighter;
 import fr.quatrevieux.araknemu.game.fight.fighter.operation.FighterOperation;
 import fr.quatrevieux.araknemu.game.fight.fighter.player.PlayerFighter;
 import fr.quatrevieux.araknemu.game.fight.turn.event.NextTurnInitiated;
 import fr.quatrevieux.araknemu.network.game.out.account.Stats;
 import fr.quatrevieux.araknemu.network.game.out.fight.turn.TurnMiddle;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Send the fighters information between two turns
@@ -41,7 +46,20 @@ public final class SendFightersInformation implements Listener<NextTurnInitiated
     @Override
     public void on(NextTurnInitiated event) {
         fight.send(new TurnMiddle(fight.fighters()));
-        fight.fighters().forEach(fighter -> fighter.apply(sendStats)); // Life of the current fighter can only be synchronized by this packet
+        ControlledInvocationFighter late = null;
+
+        final List<Fighter> temp = fight.fighters().stream().collect(Collectors.toList());
+
+        if (fight.getTurnList() != null && fight.turnList().nextFighter() instanceof ControlledInvocationFighter) {
+            late = (ControlledInvocationFighter) fight.turnList().nextFighter();
+            temp.remove(late);
+        }
+
+        temp.forEach(fighter -> fighter.apply(sendStats)); // Life of the current fighter can only be synchronized by this packet
+
+        if (late != null) { //lateinits the next controlledsummon to the summoner's UI
+            late.send(new Stats(late));
+        }
     }
 
     @Override
@@ -49,7 +67,7 @@ public final class SendFightersInformation implements Listener<NextTurnInitiated
         return NextTurnInitiated.class;
     }
 
-    private static class SendStats implements FighterOperation {
+    private static final class SendStats implements FighterOperation {
         @Override
         public void onPlayer(PlayerFighter fighter) {
             fighter.send(new Stats(fighter.properties()));

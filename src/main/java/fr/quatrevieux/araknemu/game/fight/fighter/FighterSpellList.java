@@ -34,5 +34,7 @@ public interface FighterSpellList extends SpellList {
      * @param modifier The effect modifier
      * @param value The boosted value. Use a negative value for remove the boost.
      */
-    public void boost(int spellId, SpellsBoosts.Modifier modifier, int value);
+    void boost(int spellId, SpellsBoosts.Modifier modifier, int value);
+
+    SpellList get();
 }

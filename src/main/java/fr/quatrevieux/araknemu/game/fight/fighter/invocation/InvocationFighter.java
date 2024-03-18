@@ -42,7 +42,7 @@ import java.util.Optional;
  * Fighter for invoked monster
  * Its characteristics are modified by the invoker level
  */
-public final class InvocationFighter extends AbstractPlayableFighter {
+public class InvocationFighter extends AbstractPlayableFighter {
     private final int id;
     private final Monster monster;
     private final FightTeam team;
@@ -51,7 +51,7 @@ public final class InvocationFighter extends AbstractPlayableFighter {
     private final MonsterFighterSprite sprite;
     private final FighterSpellList spells;
 
-    @SuppressWarnings({"assignment", "argument"})
+    @SuppressWarnings({"assignment", "argument", "method.invocation"})
     public InvocationFighter(int id, Monster monster, FightTeam team, Fighter invoker) {
         this.id = id;
         this.monster = monster;
@@ -133,4 +133,5 @@ public final class InvocationFighter extends AbstractPlayableFighter {
     public Monster monster() {
         return monster;
     }
+
 }

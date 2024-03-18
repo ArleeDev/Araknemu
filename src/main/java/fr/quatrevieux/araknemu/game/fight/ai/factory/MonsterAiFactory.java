@@ -63,6 +63,10 @@ public final class MonsterAiFactory implements AiFactory<PlayableFighter> {
         }
 
         private void resolve(PlayableFighter fighter, String type) {
+            if (type.equals("CONTROLLABLE")) {
+                return;
+            }
+
             final AiFactory<PlayableFighter> factory = factories.get(type);
 
             if (factory == null) {
@@ -70,8 +74,8 @@ public final class MonsterAiFactory implements AiFactory<PlayableFighter> {
             }
 
             factory
-                .create(fighter)
-                .ifPresent(ai -> this.ai = ai)
+                    .create(fighter)
+                    .ifPresent(ai -> this.ai = ai)
             ;
         }
     }

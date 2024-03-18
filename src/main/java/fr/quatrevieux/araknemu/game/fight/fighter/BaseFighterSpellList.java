@@ -42,12 +42,17 @@ public final class BaseFighterSpellList implements FighterSpellList {
     }
 
     /**
-     * @param list Base spell list
+     * @param list   Base spell list
      * @param boosts Boost instance to use
      */
     public BaseFighterSpellList(SpellList list, SpellsBoosts boosts) {
         this.list = list;
         this.boosts = boosts;
+    }
+
+    @Override
+    public SpellList get() {
+        return this.list;
     }
 
     @Override
@@ -63,9 +68,9 @@ public final class BaseFighterSpellList implements FighterSpellList {
     @Override
     public Iterator<Spell> iterator() {
         return StreamSupport.stream(list.spliterator(), false)
-            .map(boosts::get)
-            .iterator()
-        ;
+                .map(boosts::get)
+                .iterator()
+                ;
     }
 
     @Override
