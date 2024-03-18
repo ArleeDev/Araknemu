@@ -23,7 +23,6 @@ import fr.quatrevieux.araknemu.game.fight.exception.FightException;
 import fr.quatrevieux.araknemu.game.fight.fighter.invocation.ControlledInvocationFighter;
 import fr.quatrevieux.araknemu.game.fight.turn.FightTurn;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.util.NullnessUtil;
 
 import java.util.function.Consumer;
 
@@ -53,18 +52,18 @@ public abstract class AbstractPlayableFighter extends AbstractFighter implements
         return turn;
     }
 
+    @SuppressWarnings("dereference.of.nullable")
     @Override
     public final void perform(Consumer<FightTurn> action) {
-        FightTurn turn;
+        FightTurn turn = this.turn;
 
-        if (this.fight().turnList().currentFighter() instanceof ControlledInvocationFighter) {
-            if (NullnessUtil.castNonNull(this.fight().turnList().currentFighter().invoker()).equals(this)) {
+        if (this.getFight() != null && this.getFight().getTurnList() != null
+                && this.getFight().turnList().currentFighter() instanceof ControlledInvocationFighter) {
+
+            final Fighter invoker = ((ControlledInvocationFighter) this.fight().turnList().currentFighter()).invoker();
+            if (invoker.equals(this)) {
                 turn = this.fight().turnList().currentFighter().turn();
-            } else {
-                turn = this.turn;
             }
-        } else {
-            turn = this.turn;
         }
 
         if (turn != null) {

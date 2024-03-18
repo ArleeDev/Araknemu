@@ -138,6 +138,10 @@ public abstract class AbstractFighter implements Fighter {
         return fight;
     }
 
+    public @Nullable Fight getFight() {
+        return fight;
+    }
+
     @Override
     public final void joinFight(Fight fight, FightCell startCell) {
         if (this.fight != null) {

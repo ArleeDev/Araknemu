@@ -225,6 +225,13 @@ public final class Fight implements Dispatcher, Sender {
         spectators.send(sPacket);
     }
 
+    /**
+     * Used for nullchecking turnlist
+     */
+    public @Nullable FightTurnList getTurnList() {
+        return turnList;
+    }
+
     @Override
     public void dispatch(Object event) {
         dispatcher.dispatch(event);

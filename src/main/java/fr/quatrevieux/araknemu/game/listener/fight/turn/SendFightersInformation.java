@@ -48,9 +48,9 @@ public final class SendFightersInformation implements Listener<NextTurnInitiated
         fight.send(new TurnMiddle(fight.fighters()));
         ControlledInvocationFighter late = null;
 
-        List<Fighter> temp=fight.fighters().stream().collect(Collectors.toList());
+        final List<Fighter> temp = fight.fighters().stream().collect(Collectors.toList());
 
-        if (fight.turnList().nextFighter() instanceof ControlledInvocationFighter) {
+        if (fight.getTurnList() != null && fight.turnList().nextFighter() instanceof ControlledInvocationFighter) {
             late = (ControlledInvocationFighter) fight.turnList().nextFighter();
             temp.remove(late);
         }
@@ -67,7 +67,7 @@ public final class SendFightersInformation implements Listener<NextTurnInitiated
         return NextTurnInitiated.class;
     }
 
-    private static class SendStats implements FighterOperation {
+    private static final class SendStats implements FighterOperation {
         @Override
         public void onPlayer(PlayerFighter fighter) {
             fighter.send(new Stats(fighter.properties()));
